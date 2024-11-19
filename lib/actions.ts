@@ -117,11 +117,22 @@ export async function registerUser(formData: FormData) {
     password: hashedPassword,
   };
 
-  const { error } = await supabase.from("Users").insert([dataToInsert]);
+  const { data: newUserData, error } = await supabase
+    .from("Users")
+    .insert([dataToInsert])
+    .select("name, id, email")
+    .single();
 
   if (error) throw error;
 
-  return { success: true };
+  await createSession({
+    name: newUserData.name,
+    email: newUserData.email,
+    id: newUserData.id,
+    role: "user",
+  });
+
+  return { success: true, name: newUserData.name };
 }
 
 const restaurantFormSchema = z.object({

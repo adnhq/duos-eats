@@ -183,7 +183,7 @@ const SignupPage = () => {
 
       if (result.success) {
         toast({
-          title: "Registration Successful!",
+          title: `Logged in as ${result.name}`,
           description: "Your account has been created successfully.",
         });
 
@@ -195,7 +195,7 @@ const SignupPage = () => {
         verificationForm.reset();
 
         //redirect
-        router.push("/login");
+        router.push("/");
       } else {
         throw new Error("Failed to create account. Please try again.");
       }
@@ -415,10 +415,7 @@ const SignupPage = () => {
             ) : (
               <Form {...verificationForm}>
                 <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    onVerificationSubmit();
-                  }}
+                  onSubmit={verificationForm.handleSubmit(onVerificationSubmit)}
                   className="space-y-4"
                 >
                   <FormField
