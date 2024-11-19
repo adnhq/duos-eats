@@ -9,7 +9,7 @@ export default async function Page() {
   const session = await getSession();
 
   if ((session as JWTPayload).role !== "restaurant") return redirect("/");
-  const restaurant = await getRestaurant((session as JWTPayload).id);
+  const restaurants = await getRestaurant((session as JWTPayload).id);
 
   return (
     <div className="container mx-auto px-4">
@@ -23,7 +23,7 @@ export default async function Page() {
 
         <TabsContent value="profile">
           <RestaurantProfile
-            defaultValues={restaurant[0]}
+            defaultValues={restaurants[0]}
             id={(session as JWTPayload).id}
           />
         </TabsContent>

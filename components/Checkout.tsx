@@ -2,6 +2,7 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -78,7 +79,10 @@ export default function Checkout() {
 
   const discountPriceWithVat =
     cartTotalDiscountPrice +
-    vatExtraPrice(cartTotalDiscountPrice, (restaurantInfo as Restaurant)?.vat);
+    vatExtraPrice(
+      cartTotalDiscountPrice,
+      Number((restaurantInfo as Restaurant)?.vat)
+    );
 
   useEffect(() => {
     async function getInfo() {
@@ -116,11 +120,13 @@ export default function Checkout() {
       restaurantId: restaurantId as number,
       actualTotal: cartTotalPrice,
       discountTotal:
-        restaurantInfo.vat > 0 ? discountPriceWithVat : cartTotalDiscountPrice,
+        Number(restaurantInfo.vat) > 0
+          ? discountPriceWithVat
+          : cartTotalDiscountPrice,
       restaurantEarning:
-        restaurantInfo.vat > 0
+        Number(restaurantInfo.vat) > 0
           ? priceWithDiscount(cartTotalPrice, discount + DUOS_PERCENTAGE) +
-            vatExtraPrice(cartTotalDiscountPrice, restaurantInfo.vat)
+            vatExtraPrice(cartTotalDiscountPrice, Number(restaurantInfo.vat))
           : priceWithDiscount(cartTotalPrice, discount + DUOS_PERCENTAGE),
       platformFee: calcPlatformFee(cartTotalPrice),
       discount: discount,
@@ -163,7 +169,7 @@ export default function Checkout() {
   return (
     <div className="bg-orange-50 relative overflow-hidden min-h-screen">
       <BackgroundSVG />
-      <div className="max-w-7xl mx-auto px-8 py-8 relative z-10 mt-32">
+      <div className="max-w-7xl mx-auto px-8 py-8 relative z-10 mt-32 mb-24">
         <h1 className="text-3xl font-bold mb-8">Checkout</h1>
 
         {isFetching ? (
@@ -171,7 +177,7 @@ export default function Checkout() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[0.65fr_0.35fr] gap-8">
             {/* Left Column - Order Items */}
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card>
               <CardHeader>
                 <CardTitle>Your order</CardTitle>
               </CardHeader>
@@ -189,21 +195,21 @@ export default function Checkout() {
             </Card>
 
             {/* Right Column - Order Summary */}
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardContent className="space-y-6 pt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Billing Details</CardTitle>
+                <CardDescription>
+                  Please check if the below details are correct
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
                 <div>
-                  <h3 className="font-semibold mb-2">Your Personal Details</h3>
-                  <p className="text-sm">
-                    <span className="font-medium">Name:</span> {userInfo?.name}
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-medium">Email:</span>{" "}
-                    {userInfo?.email}
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-medium">Phone:</span> 0
-                    {userInfo?.phoneNumber}
-                  </p>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Customer Details
+                  </h3>
+                  <p className="text-sm">{userInfo?.name}</p>
+                  <p className="text-sm">{userInfo?.email}</p>
+                  <p className="text-sm">0{userInfo?.phoneNumber}</p>
                 </div>
 
                 <Separator />
@@ -247,7 +253,15 @@ export default function Checkout() {
                     </Badge>
                   </div>
 
-                  {restaurantInfo.vat > 0 && (
+                  {Number(restaurantInfo.vat) > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span>Subtotal(after discount)</span>
+
+                      <span>Tk {cartTotalDiscountPrice.toLocaleString()}</span>
+                    </div>
+                  )}
+
+                  {Number(restaurantInfo.vat) > 0 && (
                     <div className="flex justify-between text-sm">
                       <span>VAT</span>
 
@@ -261,7 +275,7 @@ export default function Checkout() {
                     <span>Total</span>
                     <span className="text-green-600">
                       Tk{" "}
-                      {restaurantInfo?.vat > 0
+                      {Number(restaurantInfo?.vat) > 0
                         ? discountPriceWithVat.toLocaleString()
                         : cartTotalDiscountPrice.toLocaleString()}
                     </span>
@@ -270,10 +284,12 @@ export default function Checkout() {
                     (incl. discount and tax)
                   </p>
                 </div>
+              </CardContent>
 
+              <CardFooter className="grid grid-cols-1 gap-4">
                 <div className="mt-4">
                   <p className="text-sm font-medium mb-1">Savings</p>
-                  {restaurantInfo.vat > 0 ? (
+                  {Number(restaurantInfo?.vat) > 0 ? (
                     <Progress
                       value={
                         ((cartTotalPrice - discountPriceWithVat) /
@@ -301,9 +317,6 @@ export default function Checkout() {
                         ).toLocaleString()}
                   </p>
                 </div>
-              </CardContent>
-
-              <CardFooter>
                 <Button
                   className="w-full"
                   disabled={isPending || cart.items.length === 0}

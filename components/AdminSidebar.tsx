@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { ChefHat, PencilRuler, User, Utensils } from "lucide-react";
+import { ChefHat, Cog, PencilRuler, User, Utensils } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -23,6 +23,12 @@ export default function AdminSidebar() {
       name: "Edit Menu",
       href: "/admin/EditMenu",
       icon: PencilRuler,
+    },
+    {
+      id: "RestaurantProfile",
+      name: "Restaurant Information",
+      href: "/admin/RestaurantInfo",
+      icon: Cog,
     },
   ];
 

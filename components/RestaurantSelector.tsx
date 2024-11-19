@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Restaurant } from "@/lib/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function RestaurantSelector({
   restaurants,
@@ -16,6 +16,7 @@ export default function RestaurantSelector({
   restaurants: Restaurant[];
 }) {
   const [selectedRestaurantId, setSelectedRestaurantId] = React.useState("");
+  const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const restaurantId = searchParams.get("restaurantId") ?? "";
@@ -23,7 +24,7 @@ export default function RestaurantSelector({
 
   function handleRestaurantChange(restaurantId: string) {
     setSelectedRestaurantId(restaurantId);
-    router.push(`/admin/EditMenu?restaurantId=${restaurantId}`);
+    router.push(`${pathname}?restaurantId=${restaurantId}`);
   }
 
   return (

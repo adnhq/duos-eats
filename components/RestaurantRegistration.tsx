@@ -68,6 +68,13 @@ const formSchema = z.object({
     .regex(/^(?:[1-9]|[1-4][0-9]|50)$/, {
       message: "This number must be between 1 and 50",
     }),
+  vat: z
+    .string({
+      required_error: "Please provide a valid vat percentage e.g. 0 or, 5",
+    })
+    .regex(/^(?:[0-9]|[1-4][0-9]|15)$/, {
+      message: "This number must be between 0 and 15",
+    }),
   logo: z.any().optional(),
 });
 
@@ -87,6 +94,7 @@ export default function RestaurantRegistration() {
       address: "",
       location: "",
       discount: "",
+      vat: "",
     },
   });
 
@@ -344,6 +352,24 @@ export default function RestaurantRegistration() {
                     <FormLabel>Discount Percentage</FormLabel>
                     <FormControl>
                       <Input placeholder="15" {...field} type="number" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vat"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Vat Percentage(if any)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Please enter 0 if you aren't taking extra vat"
+                        {...field}
+                        type="number"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

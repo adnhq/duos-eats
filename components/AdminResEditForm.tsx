@@ -78,7 +78,7 @@ type Props = {
   id: string | unknown;
 };
 
-export function RestaurantProfile({ defaultValues, id }: Props) {
+export default function AdminResEditForm({ defaultValues, id }: Props) {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 

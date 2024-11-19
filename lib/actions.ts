@@ -167,6 +167,7 @@ export async function registerRestaurant(formData: FormData) {
     location: formData.get("location"),
     logo: formData.get("logo"),
     discount: formData.get("discount"),
+    vat: formData.get("vat"),
   };
 
   const validatedFields = restaurantFormSchema.safeParse(values);
@@ -235,54 +236,74 @@ export async function editRestaurantDiscount(formData: FormData) {
 }
 
 export async function editRestaurant(formData: FormData) {
-  const values = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    phoneNumber: formData.get("phoneNumber"),
-    cuisine: formData.get("cuisine"),
-    address: formData.get("address"),
-    location: formData.get("location"),
-    logo: formData.get("logo"),
-  };
+  const session = await getSession();
+  if (!session) throw new Error("Please sign in to your account first!");
 
-  const isLogoFile = values.logo instanceof File;
-
-  if (isLogoFile) {
-    //upload the file
-    const resLogoName = `${Math.random()}-${
-      (values.logo as File).name
-    }`.replaceAll("/", "");
-
-    const resLogoUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/restaurantLogo/${resLogoName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("restaurantLogo")
-      .upload(resLogoName, values.logo as File);
-
-    if (uploadError) throw uploadError;
-
-    const dataToUpdate = {
-      ...values,
-      logo: resLogoUrl,
+  if (
+    Number(formData.get("id")) === Number((session as JWTPayload).id) ||
+    (session as JWTPayload).role === "admin"
+  ) {
+    const values = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phoneNumber: formData.get("phoneNumber"),
+      cuisine: formData.get("cuisine"),
+      address: formData.get("address"),
+      location: formData.get("location"),
+      logo: formData.get("logo"),
+      discount: formData.get("discount"),
+      vat: formData.get("vat"),
     };
 
-    const { error: EditError } = await supabase
-      .from("Restaurants")
-      .update(dataToUpdate)
-      .eq("id", formData.get("id"));
+    const isLogoFile = values.logo instanceof File;
 
-    if (EditError) throw EditError;
+    if (isLogoFile) {
+      //upload the file
+      const resLogoName = `${Math.random()}-${
+        (values.logo as File).name
+      }`.replaceAll("/", "");
+
+      const resLogoUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/restaurantLogo/${resLogoName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("restaurantLogo")
+        .upload(resLogoName, values.logo as File);
+
+      if (uploadError) throw uploadError;
+
+      const dataToUpdate = {
+        ...values,
+        logo: resLogoUrl,
+      };
+
+      const { error: EditError } = await supabase
+        .from("Restaurants")
+        .update(dataToUpdate)
+        .eq("id", formData.get("id"));
+
+      if (EditError) throw EditError;
+    } else {
+      const { error: EditError } = await supabase
+        .from("Restaurants")
+        .update(values)
+        .eq("id", formData.get("id"));
+
+      if (EditError) throw EditError;
+    }
+    if (session.role === "admin") {
+      revalidatePath(
+        `/admin/RestaurantInfo?restaurantId=${formData.get("id")}`
+      );
+    } else {
+      revalidatePath("/restaurant");
+    }
+
+    return { success: true };
   } else {
-    const { error: EditError } = await supabase
-      .from("Restaurants")
-      .update(values)
-      .eq("id", formData.get("id"));
-
-    if (EditError) throw EditError;
+    throw new Error(
+      "You are not authorized to edit this restaurant information"
+    );
   }
-
-  revalidatePath("/restaurant");
-  return { success: true };
 }
 
 export async function editRestaurantPassword(formData: FormData) {
