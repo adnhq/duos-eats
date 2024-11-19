@@ -95,7 +95,7 @@ export default function AboutPage() {
                 title: "Sign Up Free",
                 steps: [
                   "Create your account in seconds",
-                  "No credit card required",
+                  "No hidden fees",
                   "Instant access to all offers",
                 ],
               },
