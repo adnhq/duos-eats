@@ -95,7 +95,7 @@ export default function AboutPage() {
                 title: "Sign Up Free",
                 steps: [
                   "Create your account in seconds",
-                  "No hidden fees",
+                  "No hidden fees!",
                   "Instant access to all offers",
                 ],
               },
@@ -103,7 +103,7 @@ export default function AboutPage() {
                 title: "Explore & Choose",
                 steps: [
                   "Browse nearby partner restaurants",
-                  "View real-time offers and discounts",
+                  "View real-time offers and discounts!",
                   "Check menus and availability",
                 ],
               },
@@ -111,7 +111,7 @@ export default function AboutPage() {
                 title: "Order & Enjoy",
                 steps: [
                   "Place orders directly from your table",
-                  "Skip the wait with digital ordering",
+                  "Skip the wait with digital ordering!",
                   "Track your savings with every visit",
                 ],
               },
@@ -119,7 +119,7 @@ export default function AboutPage() {
                 title: "Savor & Save",
                 steps: [
                   "Enjoy premium dining experiences",
-                  "Earn rewards with every visit",
+                  "Earn rewards with every visit!",
                   "Share the experience with friends and family",
                 ],
               },
