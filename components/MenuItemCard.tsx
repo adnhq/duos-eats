@@ -68,7 +68,9 @@ export function MenuItemCard({ item }: MenuItemProps) {
               src={item.image === "undefined" ? duosLogo : item.image}
               alt={item.name}
               fill
-              className="rounded-md object-cover"
+              className={`rounded-md object-cover ${
+                !item.available && "opacity-70 grayscale"
+              }`}
             />
           </div>
 
@@ -101,47 +103,53 @@ export function MenuItemCard({ item }: MenuItemProps) {
               </div>
 
               {/* Quantity Controls and Add to Cart */}
-              <div className="flex items-center gap-2">
-                <div className="flex items-center bg-gray-100 rounded-md">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleQuantityChange(-1)}
-                    disabled={!quantity}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </Button>
-                  <span className="w-8 text-center text-sm">{quantity}</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleQuantityChange(1)}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
+              {item.available ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center bg-gray-100 rounded-md">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleQuantityChange(-1)}
+                      disabled={!quantity}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </Button>
+                    <span className="w-8 text-center text-sm">{quantity}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleQuantityChange(1)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
 
-                {item.MenuParameters?.length === 0 ? (
-                  <Button
-                    onClick={handleAddToCart}
-                    disabled={!quantity}
-                    size="sm"
-                    variant="default"
-                    className="w-10 sm:w-auto"
-                  >
-                    <Check className="w-4 h-4 sm:hidden" />
-                    <span className="hidden sm:inline">Add to Cart</span>
-                  </Button>
-                ) : (
-                  <ItemExtraParamForm
-                    item={item}
-                    quantity={quantity}
-                    setQuantity={setQuantity}
-                  />
-                )}
-              </div>
+                  {item.MenuParameters?.length === 0 ? (
+                    <Button
+                      onClick={handleAddToCart}
+                      disabled={!quantity}
+                      size="sm"
+                      variant="default"
+                      className="w-10 sm:w-auto"
+                    >
+                      <Check className="w-4 h-4 sm:hidden" />
+                      <span className="hidden sm:inline">Add to Cart</span>
+                    </Button>
+                  ) : (
+                    <ItemExtraParamForm
+                      item={item}
+                      quantity={quantity}
+                      setQuantity={setQuantity}
+                    />
+                  )}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm font-semibold">
+                  Currently unavailable
+                </p>
+              )}
             </div>
           </div>
         </div>

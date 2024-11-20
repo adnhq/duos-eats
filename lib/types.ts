@@ -28,6 +28,7 @@ export type MenuItem = {
   description: string;
   image: string;
   popular: boolean;
+  available: boolean;
   discount: string;
   restaurantId: number;
   category: string;

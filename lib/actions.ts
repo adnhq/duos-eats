@@ -514,6 +514,7 @@ export async function editMenuItem(formData: FormData) {
     popular: formData.get("popular"),
     category: formData.get("category"),
     image: formData.get("image"),
+    available: formData.get("available"),
   };
 
   if (values.image instanceof File) {
