@@ -276,10 +276,10 @@ export default function AdminResEditForm({ defaultValues, id }: Props) {
               name="vat"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Vat Percentage(if any)</FormLabel>
+                  <FormLabel>VAT Percentage (if applicable)</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Please enter 0 if you aren't taking extra vat"
+                      placeholder="Please enter 0 if you aren't taking extra VAT"
                       {...field}
                       type="number"
                     />
