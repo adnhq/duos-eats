@@ -1,6 +1,6 @@
 import Cart from "@/components/Cart";
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import NavWrapper from "@/components/NavWrapper";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
@@ -27,7 +27,7 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="en">
         <body className={`${man_rope.className} antialiased`}>
-          <Navbar />
+          <NavWrapper />
           {children}
           <Toaster />
           <Footer />

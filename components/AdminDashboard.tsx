@@ -1,6 +1,5 @@
 import { ArrowUpDown, DollarSign, Plus, Store } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,8 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getUnapprovedRestaurants } from "@/lib/actions";
-import Link from "next/link";
+import {
+  getAllRestaurantEarnings,
+  getUnapprovedRestaurants,
+} from "@/lib/actions";
 import RestaurantApproval from "./RestaurantApproval";
 
 // interface Restaurant {
@@ -84,89 +85,89 @@ import RestaurantApproval from "./RestaurantApproval";
 //   },
 // ];
 
-const platformStats = [
-  { name: "Total Fees", value: 0 },
-  { name: "Active Restaurants", value: 0 },
-  { name: "New Sign-ups", value: 0 },
-  { name: "Avg. Order Value", value: 0 },
-];
-
 export default async function AdminDashboard() {
   const unApprovedRestaurants = await getUnapprovedRestaurants();
+  const {
+    totalResEarnings,
+    totalPlatformFee,
+    totalConfirmedOrders,
+    totalCancelledOrders,
+  } = await getAllRestaurantEarnings();
+
+  const platformStats = [
+    {
+      name: "Total Restaurant Earnings",
+      value: totalResEarnings,
+    },
+    { name: "Total Platform Fees", value: totalPlatformFee },
+    { name: "Total Confirmed Orders", value: totalConfirmedOrders },
+    { name: "Total Cancelled Orders", value: totalCancelledOrders },
+  ];
 
   return (
-    <div className="min-h-screen">
-      <div className="space-y-6">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Admin Dashboard
-            </h1>
-            <p className="text-gray-500">Manage restaurants and applications</p>
-          </div>
-          <Button asChild>
-            <Link href={"/registration"}>
-              <Plus className="mr-2 h-4 w-4" /> Add New Restaurant
-            </Link>
-          </Button>
+    <div className="space-y-6">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+            Dashboard
+          </h1>
+          <p className="text-gray-500">View Sales and Dues</p>
         </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-          {platformStats.map((stat, index) => (
-            <Card
-              key={index}
-              className={`shadow-lg ${
-                index === 0
-                  ? "bg-gradient-to-br from-blue-500 to-blue-600"
-                  : index === 1
-                  ? "bg-gradient-to-br from-green-500 to-green-600"
-                  : index === 2
-                  ? "bg-gradient-to-br from-purple-500 to-purple-600"
-                  : "bg-gradient-to-br from-orange-500 to-orange-600"
-              }`}
-            >
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-white">
-                  {stat.name}
-                </CardTitle>
-                {index === 0 ? (
-                  <DollarSign className="h-4 w-4 text-white" />
-                ) : index === 1 ? (
-                  <Store className="h-4 w-4 text-white" />
-                ) : index === 2 ? (
-                  <Plus className="h-4 w-4 text-white" />
-                ) : (
-                  <ArrowUpDown className="h-4 w-4 text-white" />
-                )}
-              </CardHeader>
-              <CardContent>
-                <div className="text-xl md:text-2xl font-bold text-white">
-                  {index === 0 || index === 3
-                    ? `BDT ${stat.value.toLocaleString()}`
-                    : stat.value}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Pending Applications Section */}
-        <Card className="shadow-md">
-          <CardHeader className="md:pl-10 sm:pl-4">
-            <CardTitle className="text-lg font-semibold">
-              Pending Applications
-            </CardTitle>
-            <CardDescription>
-              Review new restaurant applications
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RestaurantApproval unApprovedRestaurants={unApprovedRestaurants} />
-          </CardContent>
-        </Card>
       </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        {platformStats.map((stat, index) => (
+          <Card
+            key={index}
+            className={`shadow-lg ${
+              index === 0
+                ? "bg-gradient-to-br from-blue-500 to-blue-600"
+                : index === 1
+                ? "bg-gradient-to-br from-green-500 to-green-600"
+                : index === 2
+                ? "bg-gradient-to-br from-purple-500 to-purple-600"
+                : "bg-gradient-to-br from-orange-500 to-orange-600"
+            }`}
+          >
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-white">
+                {stat.name}
+              </CardTitle>
+              {index === 0 ? (
+                <DollarSign className="h-4 w-4 text-white" />
+              ) : index === 1 ? (
+                <Store className="h-4 w-4 text-white" />
+              ) : index === 2 ? (
+                <Plus className="h-4 w-4 text-white" />
+              ) : (
+                <ArrowUpDown className="h-4 w-4 text-white" />
+              )}
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl md:text-2xl font-bold text-white">
+                {index === 0 || index === 1
+                  ? `Tk ${stat.value.toLocaleString()}`
+                  : stat.value}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Pending Applications Section */}
+      <Card className="shadow-md">
+        <CardHeader className="md:pl-10 sm:pl-4">
+          <CardTitle className="text-lg font-semibold">
+            Pending Applications
+          </CardTitle>
+          <CardDescription>Review new restaurant applications</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <RestaurantApproval unApprovedRestaurants={unApprovedRestaurants} />
+        </CardContent>
+      </Card>
     </div>
   );
 }

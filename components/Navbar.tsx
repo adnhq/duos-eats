@@ -1,16 +1,19 @@
-import { getSession } from "@/lib/actions";
+"use client";
+
 import { JWTPayload } from "jose";
 import Image from "next/image";
 import Link from "next/link";
 import duosLogo from "../duos-lg.png";
-import MobileNavbar from "./MobileNavbar";
 import DesktopNavbar from "./DesktopNavbar";
+import MobileNavbar from "./MobileNavbar";
+import { usePathname } from "next/navigation";
 
-export default async function Navbar() {
-  const session = await getSession();
+export default function Navbar({ session }: { session: JWTPayload }) {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
-    // <nav className="bg-gradient-to-tl from-orange-100 to-orange-50">
     <nav className={`relative max-w-7xl mx-auto`}>
       <div className="absolute z-10 w-full px-4 sm:px-6 lg:px-8 py-4 ">
         <div className="flex justify-between items-center">

@@ -1,4 +1,9 @@
-import AdminSidebar from "@/components/AdminSidebar";
+import AppSidebarWrapper from "@/components/AdminSidebarWrapper";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 export default function AdminLayout({
   children,
@@ -6,10 +11,19 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[16rem_1fr] min-h-screen pb-20 pt-32">
-      <AdminSidebar />
+    <div className="min-h-screen pb-20 pt-32">
+      <SidebarProvider>
+        <AppSidebarWrapper />
 
-      <main className="p-4">{children}</main>
+        <SidebarInset className="px-4">
+          <main>
+            <div className="max-w-7xl mx-auto">
+              <SidebarTrigger />
+              {children}
+            </div>
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
     </div>
   );
 }

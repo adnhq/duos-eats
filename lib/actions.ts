@@ -831,3 +831,79 @@ export async function getRestaurantEarnings(restaurantId: number | unknown) {
 
   return { totalEarnings, totalPlatformFee };
 }
+
+export async function getAllRestaurantEarnings() {
+  const { data: confirmedOrders, error: confirmError } = await supabase
+    .from("Orders")
+    .select("actualTotal, discountTotal, platformFee, restaurantEarning")
+    .eq("status", "confirmed")
+    .neq("restaurantId", 10)
+    .neq("restaurantId", 16)
+    .neq("restaurantId", 13)
+    .neq("restaurantId", 11);
+
+  if (confirmError) throw confirmError;
+
+  const { data: cancelledOrders, error: cancelError } = await supabase
+    .from("Orders")
+    .select("actualTotal, discountTotal, platformFee, restaurantEarning")
+    .eq("status", "cancelled")
+    .neq("restaurantId", 10)
+    .neq("restaurantId", 16)
+    .neq("restaurantId", 13)
+    .neq("restaurantId", 11);
+
+  if (cancelError) throw cancelError;
+
+  const totalResEarnings = confirmedOrders.reduce(
+    (acc, item) => acc + item.restaurantEarning,
+    0
+  );
+
+  const totalPlatformFee = confirmedOrders.reduce(
+    (acc, item) => acc + item.platformFee,
+    0
+  );
+
+  return {
+    totalResEarnings,
+    totalPlatformFee,
+    totalConfirmedOrders: confirmedOrders.length,
+    totalCancelledOrders: cancelledOrders.length,
+  };
+}
+
+export async function getEarningsByRestaurant(restaurantId: number | unknown) {
+  const { data: confirmedOrders, error: confirmError } = await supabase
+    .from("Orders")
+    .select("actualTotal, discountTotal, platformFee, restaurantEarning")
+    .eq("status", "confirmed")
+    .eq("restaurantId", restaurantId);
+
+  if (confirmError) throw confirmError;
+
+  const { data: cancelledOrders, error: cancelError } = await supabase
+    .from("Orders")
+    .select("actualTotal, discountTotal, platformFee, restaurantEarning")
+    .eq("status", "cancelled")
+    .eq("restaurantId", restaurantId);
+
+  if (cancelError) throw cancelError;
+
+  const totalResEarnings = confirmedOrders.reduce(
+    (acc, item) => acc + item.restaurantEarning,
+    0
+  );
+
+  const totalPlatformFee = confirmedOrders.reduce(
+    (acc, item) => acc + item.platformFee,
+    0
+  );
+
+  return {
+    totalResEarnings,
+    totalPlatformFee,
+    totalConfirmedOrders: confirmedOrders.length,
+    totalCancelledOrders: cancelledOrders.length,
+  };
+}
