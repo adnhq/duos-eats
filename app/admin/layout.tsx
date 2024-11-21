@@ -11,16 +11,15 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen pb-20 pt-32">
+    <div className="min-h-screen pb-20">
       <SidebarProvider>
         <AppSidebarWrapper />
 
         <SidebarInset className="px-4">
           <main>
-            <div className="max-w-7xl mx-auto">
-              <SidebarTrigger />
-              {children}
-            </div>
+            <SidebarTrigger />
+
+            <div className="max-w-7xl mx-auto pt-16">{children}</div>
           </main>
         </SidebarInset>
       </SidebarProvider>

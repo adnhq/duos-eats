@@ -18,8 +18,8 @@ export default async function AppSidebarWrapper() {
   if (!session) return null;
 
   return (
-    <Sidebar>
-      <SidebarHeader className="mb-16">
+    <Sidebar variant={"inset"}>
+      <SidebarHeader className="mb-10">
         <div className="flex justify-center">
           <Image src={duosLogo} alt="DUOS Logo" width={128} height={56} />
         </div>
