@@ -11,7 +11,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       <main className="max-w-7xl mx-auto px-4 py-24 space-y-24">
-        {/* Hero Section */}
+        {/* Hero Section. */}
         <section className="text-center space-y-6 max-w-4xl mx-auto">
           <h1 className="space-y-2">
             <span className={`block text-6xl font-semibold`}>Welcome to</span>
