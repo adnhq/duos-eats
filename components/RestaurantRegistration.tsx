@@ -363,10 +363,10 @@ export default function RestaurantRegistration() {
                 name="vat"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Vat Percentage(if any)</FormLabel>
+                    <FormLabel>VAT Percentage (if applicable)</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Please enter 0 if you aren't taking extra vat"
+                        placeholder="0"
                         {...field}
                         type="number"
                       />
