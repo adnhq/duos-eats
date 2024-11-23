@@ -14,14 +14,6 @@ export default function RestaurantsClient({ initialRestaurants }: RestaurantsCli
   const [query, setQuery] = useState("");
 
   const filtered = initialRestaurants.filter(restaurant => {
-    console.log({
-      restaurantName: restaurant.name,
-      query: query,
-      lowerRestaurant: restaurant.name.toLowerCase(),
-      lowerQuery: query.toLowerCase(),
-      matches: restaurant.name.toLowerCase().includes(query.toLowerCase())
-    });
-    
     return restaurant.name.toLowerCase().includes(query.toLowerCase());
   });
 
