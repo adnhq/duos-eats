@@ -52,7 +52,9 @@ export default function UserOrderCard({ order }: { order: OrderType }) {
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">{orderCreatingTime}</p>
 
-          <p className="font-medium">Total: BDT {order.discountTotal}</p>
+          <p className="font-medium">
+            Total: Tk {order.discountTotal.toLocaleString()}
+          </p>
 
           <Badge variant="secondary" className="bg-green-100 text-green-800">
             {order.discount}% discount applied

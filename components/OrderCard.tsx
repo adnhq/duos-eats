@@ -21,13 +21,20 @@ import { useToast } from "@/hooks/use-toast";
 import { cancelOrder, confirmOrder } from "@/lib/actions";
 import { OrderType } from "@/lib/types";
 import { format } from "date-fns";
-import { CheckCircle, Eye, Loader2, XCircle } from "lucide-react";
+import {
+  CheckCircle,
+  Clock,
+  Eye,
+  HandCoins,
+  Loader2,
+  XCircle,
+} from "lucide-react";
 import { useState } from "react";
 
 export default function OrderCard({ order }: { order: OrderType }) {
   const orderCreatingTime = format(
     new Date(order.created_at),
-    "yyyy-MM-dd HH:mm a"
+    "MMM d, yyyy 'at' h:mm a"
   );
   const [isLoading1, setIsLoading1] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
@@ -83,121 +90,161 @@ export default function OrderCard({ order }: { order: OrderType }) {
     }
   }
 
-  // async function completeOrderStatus() {
-  //   try {
-  //     setIsLoading3(true);
-  //     const res = await completeOrder(order.id);
-
-  //     if (res.success) {
-  //       toast({
-  //         title: `Order is completed.`,
-  //         description: "Order status updated",
-  //       });
-  //     } else {
-  //       throw new Error("Some unknown error occurred");
-  //     }
-  //   } catch (error) {
-  //     toast({
-  //       title: "Couldn't update the order status!",
-  //       description: (error as Error).message,
-  //       variant: "destructive",
-  //     });
-  //   } finally {
-  //     setIsLoading3(false);
-  //   }
-  // }
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "pending":
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
+            {status}
+          </Badge>
+        );
+      case "cancelled":
+        return (
+          <Badge
+            variant="destructive"
+            className="bg-red-100 text-red-800 hover:bg-red-200"
+          >
+            {status}
+          </Badge>
+        );
+      case "confirmed":
+        return (
+          <Badge
+            variant="secondary"
+            className="bg-green-100 text-green-800 hover:bg-green-200"
+          >
+            {status}
+          </Badge>
+        );
+      default:
+        return <Badge>{status}</Badge>;
+    }
+  };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
+    <Card className="w-full overflow-hidden transition-all duration-300 hover:shadow-lg">
+      <CardHeader className="">
         <CardTitle className="flex justify-between items-center">
-          <span>Order #{order.id}</span>
-          {order.status === "pending" && <Badge>{order.status}</Badge>}
-
-          {order.status === "cancelled" && (
-            <Badge variant="destructive">{order.status}</Badge>
-          )}
-          {order.status === "confirmed" && (
-            <Badge variant="secondary" className="bg-green-100 text-green-800">
-              {order.status}
-            </Badge>
-          )}
+          <span className="text-xl font-semibold text-gray-800">
+            Order #{order.id}
+          </span>
+          {getStatusBadge(order.status)}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <p className="font-normal text-base">
-          Paid Amount(TK): {order.discountTotal.toFixed(2)}
-        </p>
-
-        <p className="font-normal text-base">
-          Final Earnings(TK): {order.restaurantEarning.toFixed(2)}
-        </p>
-
-        <p className="font-normal text-base">
-          Platform Fee(TK): {order.platformFee.toFixed(2)}
-        </p>
-        <p className="text-sm text-muted-foreground">{orderCreatingTime}</p>
-        <Badge variant="secondary" className="bg-green-100 text-green-800">
-          {order.discount}% discount applied
-        </Badge>
+      <CardContent className="space-y-4 pt-6">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex items-center space-x-2">
+            <HandCoins className="h-5 w-5 text-green-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-500">Paid Amount</p>
+              <p className="text-base font-semibold">
+                TK {order.discountTotal.toLocaleString()}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <HandCoins className="h-5 w-5 text-blue-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-500">
+                Final Earnings
+              </p>
+              <p className="text-base font-semibold">
+                TK {order.restaurantEarning.toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          <HandCoins className="h-5 w-5 text-purple-600" />
+          <div>
+            <p className="text-sm font-medium text-gray-500">Platform Fee</p>
+            <p className="text-base font-semibold">
+              TK {order.platformFee.toLocaleString()}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2 text-gray-600">
+          <Clock className="h-4 w-4" />
+          <p className="text-sm">{orderCreatingTime}</p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Badge
+            variant="secondary"
+            className="bg-green-100 text-green-800 hover:bg-green-200"
+          >
+            {order.discount}% discount applied
+          </Badge>
+        </div>
       </CardContent>
-      <CardFooter className="flex flex-wrap gap-2">
+      <CardFooter className="flex flex-wrap gap-2 pt-4">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" className="w-full">
               <Eye className="mr-2 h-4 w-4" />
-              View
+              View Details
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Order Details</DialogTitle>
+              <DialogTitle className="text-xl font-semibold">
+                Order Details
+              </DialogTitle>
               <DialogDescription>
                 Order #{order.id} • {orderCreatingTime}
               </DialogDescription>
             </DialogHeader>
 
-            <div>
-              <h2 className="font-semibold">Customer Details</h2>
-              <p className="text-sm text-muted-foreground">
-                Name:{" "}
-                <span className="text-primary-foreground">
-                  {order.Users.name}
-                </span>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Contact no.:
-                <span className="text-primary-foreground">
-                  0{order.Users.phoneNumber}
-                </span>
-              </p>
-            </div>
             <div className="space-y-4">
-              {order.OrderItems.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex justify-between items-center py-2 border-b"
-                >
-                  <div>
-                    <p className="font-medium">{item.Menu.name}</p>
-                    {item.extraParams !== null &&
-                      item.extraParams.map((extraParam, idx) => (
-                        <p className="text-xs" key={idx}>{`${
-                          extraParam.split(":")[0]
-                        } - ${extraParam.split(":")[1]}`}</p>
-                      ))}
-                    <p className="text-sm text-muted-foreground">
-                      BDT {item.actualCurrentPrice} × {item.quantity}
+              <div>
+                <h2 className="font-semibold text-lg mb-2">Customer Details</h2>
+                <p className="text-sm text-gray-600">
+                  Name:{" "}
+                  <span className="font-medium text-gray-900">
+                    {order.Users.name}
+                  </span>
+                </p>
+                <p className="text-sm text-gray-600">
+                  Contact no.:{" "}
+                  <span className="font-medium text-gray-900">
+                    0{order.Users.phoneNumber}
+                  </span>
+                </p>
+              </div>
+              <div className="space-y-4">
+                {order.OrderItems.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex justify-between items-center py-3 border-b last:border-b-0"
+                  >
+                    <div>
+                      <p className="font-medium text-gray-800">
+                        {item.Menu.name}
+                      </p>
+                      {item.extraParams !== null &&
+                        item.extraParams.map((extraParam, idx) => (
+                          <p className="text-xs text-gray-600" key={idx}>{`${
+                            extraParam.split(":")[0]
+                          }: ${extraParam.split(":")[1]}`}</p>
+                        ))}
+                      <p className="text-sm text-gray-500">
+                        TK {item.actualCurrentPrice.toLocaleString()} ×{" "}
+                        {item.quantity}
+                      </p>
+                    </div>
+                    <p className="font-medium text-gray-800">
+                      TK{" "}
+                      {(
+                        item.actualCurrentPrice * item.quantity
+                      ).toLocaleString()}
                     </p>
                   </div>
-                  <p className="font-medium">
-                    BDT {item.actualCurrentPrice * item.quantity}
+                ))}
+                <div className="flex justify-between items-center pt-2">
+                  <p className="font-bold text-lg text-gray-800">Total</p>
+                  <p className="font-bold text-lg text-gray-800">
+                    TK {order.discountTotal.toLocaleString()}
                   </p>
                 </div>
-              ))}
-              <div className="flex justify-between items-center pt-2">
-                <p className="font-bold">Total</p>
-                <p className="font-bold">BDT {order.discountTotal}</p>
               </div>
             </div>
           </DialogContent>
@@ -209,10 +256,11 @@ export default function OrderCard({ order }: { order: OrderType }) {
               size="sm"
               disabled={allLoading}
               onClick={acceptOrder}
+              className="w-full sm:w-auto"
             >
               {isLoading1 ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   Confirming
                 </>
               ) : (
@@ -227,10 +275,11 @@ export default function OrderCard({ order }: { order: OrderType }) {
               size="sm"
               disabled={allLoading}
               onClick={rejectOrder}
+              className="w-full sm:w-auto"
             >
               {isLoading2 ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   Cancelling
                 </>
               ) : (

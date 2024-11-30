@@ -878,6 +878,10 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
   const { data: confirmedOrders, error: confirmError } = await supabase
     .from("Orders")
     .select("actualTotal, discountTotal, platformFee, restaurantEarning")
+    .neq("restaurantId", 10)
+    .neq("restaurantId", 16)
+    .neq("restaurantId", 13)
+    .neq("restaurantId", 11)
     .eq("status", "confirmed")
     .eq("restaurantId", restaurantId);
 
@@ -886,6 +890,10 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
   const { data: cancelledOrders, error: cancelError } = await supabase
     .from("Orders")
     .select("actualTotal, discountTotal, platformFee, restaurantEarning")
+    .neq("restaurantId", 10)
+    .neq("restaurantId", 16)
+    .neq("restaurantId", 13)
+    .neq("restaurantId", 11)
     .eq("status", "cancelled")
     .eq("restaurantId", restaurantId);
 
