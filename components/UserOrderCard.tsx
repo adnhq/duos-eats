@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -19,12 +20,12 @@ import {
 } from "@/components/ui/dialog";
 import { OrderType } from "@/lib/types";
 import { format } from "date-fns";
-import { Eye } from "lucide-react";
+import { Clock, Eye, HandCoins } from "lucide-react";
 
 export default function UserOrderCard({ order }: { order: OrderType }) {
   const orderCreatingTime = format(
     new Date(order.created_at),
-    "yyyy-MM-dd HH:mm a"
+    "MMM d, yyyy 'at' h:mm a"
   );
 
   return (
@@ -35,26 +36,35 @@ export default function UserOrderCard({ order }: { order: OrderType }) {
             Order #{order.id} from {order.Restaurants.name}
           </span>
           {order.status === "pending" && <Badge>{order.status}</Badge>}
-          {order.status === "processing" && (
-            <Badge variant="outline">{order.status}</Badge>
-          )}
+
           {order.status === "cancelled" && (
             <Badge variant="destructive">{order.status}</Badge>
           )}
-          {order.status === "completed" && (
+          {order.status === "confirmed" && (
             <Badge variant="secondary" className="bg-green-100 text-green-800">
               {order.status}
             </Badge>
           )}
         </CardTitle>
+
+        <CardDescription>
+          <div className="flex items-center space-x-2 text-gray-600">
+            <Clock className="h-4 w-4 mr-2" />
+            {orderCreatingTime}
+          </div>
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">{orderCreatingTime}</p>
-
-          <p className="font-medium">
-            Total: Tk {order.discountTotal.toLocaleString()}
-          </p>
+        <div className="flex justify-between items-end">
+          <div className="flex items-center space-x-2">
+            <HandCoins className="h-5 w-5 text-green-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-500">Paid Amount</p>
+              <p className="text-base font-semibold">
+                TK {order.discountTotal.toLocaleString()}
+              </p>
+            </div>
+          </div>
 
           <Badge variant="secondary" className="bg-green-100 text-green-800">
             {order.discount}% discount applied
@@ -64,7 +74,7 @@ export default function UserOrderCard({ order }: { order: OrderType }) {
       <CardFooter>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" size="sm" className="w-full">
+            <Button variant="outline" className="w-full">
               <Eye className="mr-2 h-4 w-4" />
               View Details
             </Button>

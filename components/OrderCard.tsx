@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -130,6 +131,13 @@ export default function OrderCard({ order }: { order: OrderType }) {
           </span>
           {getStatusBadge(order.status)}
         </CardTitle>
+
+        <CardDescription>
+          <div className="flex items-center space-x-2 text-gray-600">
+            <Clock className="h-4 w-4 mr-2" />
+            {orderCreatingTime}
+          </div>
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 pt-6">
         <div className="grid grid-cols-2 gap-4">
@@ -163,11 +171,8 @@ export default function OrderCard({ order }: { order: OrderType }) {
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-2 text-gray-600">
-          <Clock className="h-4 w-4" />
-          <p className="text-sm">{orderCreatingTime}</p>
-        </div>
-        <div className="flex items-center space-x-2">
+
+        <div className="flex items-center space-x-2 justify-end">
           <Badge
             variant="secondary"
             className="bg-green-100 text-green-800 hover:bg-green-200"

@@ -1,16 +1,17 @@
-import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, DollarSign } from "lucide-react";
+import { Restaurant } from "@/lib/types";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Restaurant } from "@/lib/types";
+import React from "react";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const PriceIndicator: React.FC<{ level: number }> = ({ level }) => (
   <div className="flex items-center space-x-0.5">
     {Array(3)
       .fill(null)
       .map((_, index) => (
-        <DollarSign
+        <FaBangladeshiTakaSign
           key={index}
           className={`w-3 h-3 ${
             index < level ? "text-green-600" : "text-muted-foreground/30"
