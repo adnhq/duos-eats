@@ -20,7 +20,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="grid grid-cols-[auto_1fr] py-4 border-b gap-4">
+    <div className="grid grid-cols-[auto_1fr] py-4 border-b gap-4 last:border-b-0">
       <div className="w-16 h-16 relative">
         <Image
           src={item.image}
