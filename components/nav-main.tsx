@@ -18,7 +18,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { BaggageClaimIcon, ChefHat, Cog, Home, Utensils } from "lucide-react";
+import { BaggageClaimIcon, ChefHat, Home, Utensils } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const items = [
@@ -88,12 +88,12 @@ const items = [
       },
     ],
   },
-  {
-    id: "settings",
-    name: "Settings",
-    href: "/admin/settings",
-    icon: Cog,
-  },
+  // {
+  //   id: "settings",
+  //   name: "Settings",
+  //   href: "/admin/settings",
+  //   icon: Cog,
+  // },
 ];
 
 export function NavMain() {

@@ -33,6 +33,7 @@ import CartItem from "./CartItem";
 import Spinner from "./Spinner";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import { Progress } from "./ui/progress";
 
 const BackgroundSVG = () => (
@@ -71,6 +72,7 @@ export default function Checkout() {
 
   const [restaurantInfo, setRestaurantInfo] = useState<Restaurant | null>(null);
   const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [tableNumber, setTableNumber] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [isFetching, startFetchTransition] = useTransition();
   const { toast } = useToast();
@@ -116,6 +118,7 @@ export default function Checkout() {
     if (restaurantInfo === null) return;
 
     const orderData = {
+      tableNumber: restaurantInfo.tableOrder ? tableNumber : "",
       userId: userInfo.id,
       restaurantId: restaurantId as number,
       actualTotal: cartTotalPrice,
@@ -234,6 +237,21 @@ export default function Checkout() {
                       </span>
                     </div>
                   ))}
+
+                  {restaurantInfo.tableOrder && (
+                    <>
+                      <p className="text-sm mt-4 mb-2 font-semibold">
+                        Enter your table number
+                      </p>
+                      <Input
+                        placeholder="Table 7"
+                        value={tableNumber}
+                        onChange={(e) => {
+                          setTableNumber(e.target.value);
+                        }}
+                      />
+                    </>
+                  )}
                 </div>
 
                 <Separator />
@@ -319,7 +337,11 @@ export default function Checkout() {
                 </div>
                 <Button
                   className="w-full"
-                  disabled={isPending || cart.items.length === 0}
+                  disabled={
+                    isPending ||
+                    cart.items.length === 0 ||
+                    (restaurantInfo.tableOrder && tableNumber === "")
+                  }
                   onClick={handleCheckout}
                 >
                   {isPending ? (

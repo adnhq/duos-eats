@@ -1,13 +1,11 @@
 "use client";
 
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -18,8 +16,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { JWTPayload } from "jose";
 import { logout } from "@/lib/actions";
+import { JWTPayload } from "jose";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 
@@ -43,10 +41,16 @@ export function NavUser({ session }: { session: JWTPayload }) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={""}
+                  src={
+                    (session as JWTPayload).role === "restaurant"
+                      ? ((session as JWTPayload).logo as string)
+                      : ""
+                  }
                   alt={(session as JWTPayload).name as string}
                 />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {((session as JWTPayload).name as string)[0]}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
@@ -69,10 +73,17 @@ export function NavUser({ session }: { session: JWTPayload }) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={""}
+                    src={
+                      (session as JWTPayload).role === "restaurant"
+                        ? ((session as JWTPayload).logo as string)
+                        : ""
+                    }
                     alt={(session as JWTPayload).name as string}
                   />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {" "}
+                    {((session as JWTPayload).name as string)[0]}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
@@ -85,12 +96,6 @@ export function NavUser({ session }: { session: JWTPayload }) {
               </div>
             </DropdownMenuLabel>
 
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck /> Account
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
             <DropdownMenuSeparator />
 
             <Button

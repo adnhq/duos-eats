@@ -12,7 +12,7 @@ export default async function Page() {
   const restaurants = await getRestaurant((session as JWTPayload).id);
 
   return (
-    <div className="container mx-auto px-4">
+    <div>
       <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
       <Tabs defaultValue="profile" className="space-y-6">

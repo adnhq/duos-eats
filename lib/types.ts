@@ -3,6 +3,7 @@ export type UserSessionInfo = {
   email: string;
   name: string;
   role: "restaurant" | "user" | "admin";
+  logo?: string;
 };
 
 export type Restaurant = {
@@ -19,6 +20,8 @@ export type Restaurant = {
   location: string;
   discount: string;
   vat: number | string;
+  tableOrder: boolean;
+  priceLevel: number;
 };
 
 export type MenuItem = {
@@ -49,6 +52,7 @@ export type OrderData = {
   discountTotal: number;
   restaurantEarning: number;
   platformFee: number;
+  tableNumber: string;
   items: {
     id: number;
     name: string;
@@ -107,6 +111,7 @@ export type OrderType = {
   OrderItems: OrderItemType[];
   Users: UserType;
   Restaurants: Restaurant;
+  tableNumber: string | null;
 };
 
 export type OrderItemType = {

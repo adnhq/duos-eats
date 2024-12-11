@@ -11,7 +11,12 @@ import { usePathname } from "next/navigation";
 export default function Navbar({ session }: { session: JWTPayload }) {
   const pathname = usePathname();
 
-  if (pathname.startsWith("/admin")) return null;
+  if (
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/restaurant") ||
+    pathname.startsWith("/users/Dashboard")
+  )
+    return null;
 
   return (
     <nav className={`relative max-w-7xl mx-auto`}>

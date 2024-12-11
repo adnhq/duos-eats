@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -21,6 +20,7 @@ import {
 import { OrderType } from "@/lib/types";
 import { format } from "date-fns";
 import { Clock, Eye, HandCoins } from "lucide-react";
+import { MdTableBar } from "react-icons/md";
 
 export default function UserOrderCard({ order }: { order: OrderType }) {
   const orderCreatingTime = format(
@@ -47,14 +47,22 @@ export default function UserOrderCard({ order }: { order: OrderType }) {
           )}
         </CardTitle>
 
-        <CardDescription>
-          <div className="flex items-center space-x-2 text-gray-600">
-            <Clock className="h-4 w-4 mr-2" />
-            {orderCreatingTime}
-          </div>
-        </CardDescription>
+        <div className="flex items-center space-x-2 text-gray-600 text-sm">
+          <Clock className="h-4 w-4 mr-2" />
+          {orderCreatingTime}
+        </div>
       </CardHeader>
       <CardContent>
+        {order.tableNumber !== null && order.tableNumber !== "" && (
+          <div className="flex items-center space-x-2 mb-4">
+            <MdTableBar className="h-5 w-5 text-green-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-500">Table Number</p>
+              <p className="text-base font-semibold">{order.tableNumber}</p>
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-between items-end">
           <div className="flex items-center space-x-2">
             <HandCoins className="h-5 w-5 text-green-600" />

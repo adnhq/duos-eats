@@ -287,7 +287,7 @@ export function OrdersTab({
   return (
     <Tabs defaultValue="orders" className="space-y-6">
       <TabsList className="justify-start">
-        <TabsTrigger value="orders">Order Stats</TabsTrigger>
+        <TabsTrigger value="orders">Orders</TabsTrigger>
         <TabsTrigger value="revenue">Revenue</TabsTrigger>
       </TabsList>
 

@@ -1,17 +1,3 @@
-// import { getSession, getUserName } from "@/lib/actions";
-// import { JWTPayload } from "jose";
-// import { redirect } from "next/navigation";
-// import UserSidebar from "./UserSidebar";
-
-// export default async function UserSidebarWrapper() {
-//   const session = await getSession();
-//   if (!session || (session as JWTPayload).role !== "user") return redirect("/");
-
-//   const username = await getUserName((session as JWTPayload).id);
-
-//   return <UserSidebar username={username.split(" ")[0]} />;
-// }
-
 import { getSession } from "@/lib/actions";
 import { JWTPayload } from "jose";
 import Image from "next/image";
@@ -23,9 +9,9 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "./ui/sidebar";
-import UserSidebarContent from "./UserSidebarContent";
+import RestaurantSidebarContent from "./RestaurantSidebarContent";
 
-export default async function UserSidebarWrapper() {
+export default async function RestaurantSidebarWrapper() {
   const session = await getSession();
 
   if (!session) return null;
@@ -38,7 +24,7 @@ export default async function UserSidebarWrapper() {
       </SidebarHeader>
 
       <SidebarContent>
-        <UserSidebarContent />
+        <RestaurantSidebarContent />
       </SidebarContent>
 
       <SidebarFooter>

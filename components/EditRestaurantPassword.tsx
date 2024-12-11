@@ -93,7 +93,7 @@ export default function EditRestaurantPassword({
   }
 
   return (
-    <Card>
+    <Card className="max-w-4xl">
       <CardHeader>
         <CardTitle>Security Settings</CardTitle>
         <CardDescription>Update your password</CardDescription>

@@ -28,21 +28,28 @@ export default function RestaurantSelector({
   }
 
   return (
-    <Select value={selectedRestaurantId} onValueChange={handleRestaurantChange}>
-      <SelectTrigger className="mb-4 md:w-72">
-        <SelectValue placeholder="Select a Restaurant" />
-      </SelectTrigger>
-      <SelectContent>
-        {restaurants.length > 0 && (
-          <>
-            {restaurants.map((restaurant: Restaurant, idx: number) => (
-              <SelectItem key={idx} value={`${restaurant.id}`}>
-                {restaurant.name}
-              </SelectItem>
-            ))}
-          </>
-        )}
-      </SelectContent>
-    </Select>
+    <div className="flex flex-col gap-2">
+      <h2 className="text-md font-semibold">Select a Restaurant</h2>
+
+      <Select
+        value={selectedRestaurantId}
+        onValueChange={handleRestaurantChange}
+      >
+        <SelectTrigger className="mb-4 md:w-72">
+          <SelectValue placeholder="Select a Restaurant" />
+        </SelectTrigger>
+        <SelectContent>
+          {restaurants.length > 0 && (
+            <>
+              {restaurants.map((restaurant: Restaurant, idx: number) => (
+                <SelectItem key={idx} value={`${restaurant.id}`}>
+                  {restaurant.name}
+                </SelectItem>
+              ))}
+            </>
+          )}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

@@ -1,5 +1,11 @@
 import AppSidebarWrapper from "@/components/AdminSidebarWrapper";
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
@@ -11,18 +17,24 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen pb-20">
-      <SidebarProvider>
-        <AppSidebarWrapper />
+    <SidebarProvider>
+      <AppSidebarWrapper />
 
-        <SidebarInset className="px-4">
-          <main>
-            <SidebarTrigger />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbLink href="/admin/Dashboard">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </header>
 
-            <div className="max-w-7xl mx-auto pt-16">{children}</div>
-          </main>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
+        <main className="flex-1 py-16 px-3">
+          <div className="max-w-7xl mx-auto">{children}</div>
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

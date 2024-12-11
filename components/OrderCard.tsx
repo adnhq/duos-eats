@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -122,6 +121,8 @@ export default function OrderCard({ order }: { order: OrderType }) {
     }
   };
 
+  console.log(order.tableNumber);
+
   return (
     <Card className="w-full overflow-hidden transition-all duration-300 hover:shadow-lg">
       <CardHeader className="">
@@ -132,12 +133,10 @@ export default function OrderCard({ order }: { order: OrderType }) {
           {getStatusBadge(order.status)}
         </CardTitle>
 
-        <CardDescription>
-          <div className="flex items-center space-x-2 text-gray-600">
-            <Clock className="h-4 w-4 mr-2" />
-            {orderCreatingTime}
-          </div>
-        </CardDescription>
+        <div className="flex items-center space-x-2 text-gray-600 text-sm">
+          <Clock className="h-4 w-4 mr-2" />
+          {orderCreatingTime}
+        </div>
       </CardHeader>
       <CardContent className="space-y-4 pt-6">
         <div className="grid grid-cols-2 gap-4">
@@ -181,7 +180,7 @@ export default function OrderCard({ order }: { order: OrderType }) {
           </Badge>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-wrap gap-2 pt-4">
+      <CardFooter className="flex gap-2 pt-4">
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="w-full">
@@ -209,11 +208,19 @@ export default function OrderCard({ order }: { order: OrderType }) {
                   </span>
                 </p>
                 <p className="text-sm text-gray-600">
-                  Contact no.:{" "}
+                  Contact No.:{" "}
                   <span className="font-medium text-gray-900">
                     0{order.Users.phoneNumber}
                   </span>
                 </p>
+                {order.tableNumber !== null && order.tableNumber !== "" && (
+                  <p className="text-sm text-gray-600">
+                    Table No.:{" "}
+                    <span className="font-medium text-gray-900">
+                      {order.tableNumber}
+                    </span>
+                  </p>
+                )}
               </div>
               <div className="space-y-4">
                 {order.OrderItems.map((item, idx) => (

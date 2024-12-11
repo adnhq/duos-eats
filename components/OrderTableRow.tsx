@@ -92,7 +92,7 @@ function OrderTableRow({ order }: { order: OrderType }) {
       <TableCell>{order.platformFee.toFixed(2)}</TableCell>
 
       <TableCell>
-        <div className="flex space-x-2">
+        <div className="flex flex-col gap-2">
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
@@ -122,6 +122,14 @@ function OrderTableRow({ order }: { order: OrderType }) {
                     0{order.Users.phoneNumber}
                   </span>
                 </p>
+                {order.tableNumber !== null && order.tableNumber !== "" && (
+                  <p className="text-sm text-gray-600">
+                    Table No.:{" "}
+                    <span className="font-medium text-gray-900">
+                      {order.tableNumber}
+                    </span>
+                  </p>
+                )}
               </div>
 
               <div className="space-y-4">

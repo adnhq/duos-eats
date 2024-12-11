@@ -12,8 +12,9 @@ export default async function Page() {
   if (session === null) return null;
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="space-y-4">
+    <>
+      <h1 className="text-2xl font-bold mb-4">Current Menu Items</h1>
+      <div className="space-y-4 max-w-4xl">
         {menuItems?.map((menuItem) => (
           <EditMenuItemCard
             key={menuItem.id}
@@ -22,6 +23,6 @@ export default async function Page() {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 }

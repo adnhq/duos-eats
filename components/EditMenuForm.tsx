@@ -166,8 +166,8 @@ export default function EditMenuItemForm({
   };
 
   return (
-    <Card className="ml-4">
-      <CardHeader>
+    <Card className="max-w-4xl">
+      <CardHeader className="pl-8">
         <CardTitle>Editing Item#{editMenuId}</CardTitle>
         <CardDescription>
           Update the below details to update the menu item

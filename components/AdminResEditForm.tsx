@@ -35,6 +35,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { Checkbox } from "./ui/checkbox";
 
 const updateFormSchema = z.object({
   name: z.string().min(2, {
@@ -71,6 +72,7 @@ const updateFormSchema = z.object({
     .regex(/^(?:[0-9]|[1-4][0-9]|15)$/, {
       message: "This number must be between 0 and 15",
     }),
+  tableOrder: z.boolean().default(false),
 });
 
 type Props = {
@@ -253,6 +255,28 @@ export default function AdminResEditForm({ defaultValues, id }: Props) {
                     </SelectContent>
                   </Select>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={updateForm.control}
+              name="tableOrder"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Do you want Table Order?</FormLabel>
+                    <p className="text-sm text-muted-foreground">
+                      This will allow customers to order food directly from
+                      their table.
+                    </p>
+                  </div>
                 </FormItem>
               )}
             />

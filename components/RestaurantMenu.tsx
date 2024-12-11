@@ -76,7 +76,7 @@ export default function RestaurantMenu({
   );
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
       {/* Restaurant Header Section */}
       <div className="mb-6">
         <div className="relative h-52 sm:h-72 w-full overflow-hidden rounded-xl mb-4">

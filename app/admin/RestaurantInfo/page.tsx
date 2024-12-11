@@ -13,7 +13,7 @@ export default async function Page({ searchParams }: PageProps) {
   const { restaurantId } = await searchParams;
 
   return (
-    <div>
+    <div className="max-w-4xl">
       <RestaurantSelectorWrapper />
 
       <Suspense fallback={<Spinner />} key={restaurantId}>

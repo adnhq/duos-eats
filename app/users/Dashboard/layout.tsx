@@ -1,4 +1,11 @@
 import UserSidebarWrapper from "@/components/UserSidebarWrapper";
+import { Breadcrumb, BreadcrumbItem } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 export default function UserDashboardLayout({
   children,
@@ -6,10 +13,24 @@ export default function UserDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[16rem_1fr] min-h-screen pb-20 pt-32">
+    <SidebarProvider>
       <UserSidebarWrapper />
 
-      <main className="p-4">{children}</main>
-    </div>
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbItem className="hidden md:block">
+              Dashboard
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </header>
+
+        <main className="flex-1 py-16 px-3">
+          <div className="max-w-7xl mx-auto">{children}</div>
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

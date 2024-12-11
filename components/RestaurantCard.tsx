@@ -57,7 +57,7 @@ export default function RestaurantCard({
                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
                 <span className="font-medium text-xs">{"0.0"}</span>
               </div>
-              <PriceIndicator level={1} />
+              <PriceIndicator level={restaurant.priceLevel} />
             </div>
           </div>
         </CardContent>

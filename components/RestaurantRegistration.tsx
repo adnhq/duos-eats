@@ -34,6 +34,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { Checkbox } from "./ui/checkbox";
 
 const formSchema = z.object({
   restaurantName: z.string().min(2, {
@@ -76,6 +77,7 @@ const formSchema = z.object({
       message: "This number must be between 0 and 15",
     }),
   logo: z.any().optional(),
+  tableOrder: z.boolean().default(false),
 });
 
 export default function RestaurantRegistration() {
@@ -95,6 +97,7 @@ export default function RestaurantRegistration() {
       location: "",
       discount: "",
       vat: "",
+      tableOrder: false,
     },
   });
 
@@ -131,6 +134,7 @@ export default function RestaurantRegistration() {
         address: "",
         location: "",
         discount: "",
+        tableOrder: false,
       });
     }
   }
@@ -346,6 +350,28 @@ export default function RestaurantRegistration() {
 
               <FormField
                 control={form.control}
+                name="tableOrder"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Do you want Table Order?</FormLabel>
+                      <p className="text-sm text-muted-foreground">
+                        This will allow customers to order food directly from
+                        their table.
+                      </p>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="discount"
                 render={({ field }) => (
                   <FormItem>
@@ -365,11 +391,7 @@ export default function RestaurantRegistration() {
                   <FormItem>
                     <FormLabel>VAT Percentage (if applicable)</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="0"
-                        {...field}
-                        type="number"
-                      />
+                      <Input placeholder="0" {...field} type="number" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

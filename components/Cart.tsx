@@ -9,7 +9,7 @@ import { getSession } from "@/lib/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { CartItemType } from "@/lib/types";
 import { BaggageClaim, ShoppingBag, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import CartItem from "./CartItem";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
@@ -28,6 +28,7 @@ export default function Cart() {
   const cartTotalDiscountPrice = useAppSelector(getTotalCartPriceAfterDiscount);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   async function handleCheckout() {
@@ -47,6 +48,13 @@ export default function Cart() {
     dispatch(clearCart());
     setIsOpen(false);
   }
+
+  if (
+    pathname.startsWith("/users") ||
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/restaurant")
+  )
+    return null;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

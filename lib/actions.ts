@@ -40,6 +40,7 @@ export async function restaurantLogin(formData: FormData) {
     email: restaurant[0].email,
     id: restaurant[0].id,
     role: "restaurant",
+    logo: restaurant[0].logo,
   });
 }
 
@@ -145,6 +146,7 @@ const restaurantFormSchema = z.object({
   location: z.string(),
   logo: z.any().optional(),
   discount: z.string().regex(/^(?:[1-9]|[1-4][0-9]|50)$/),
+  tableOrder: z.boolean().default(false),
 });
 
 export async function registerRestaurant(formData: FormData) {
@@ -168,6 +170,7 @@ export async function registerRestaurant(formData: FormData) {
     logo: formData.get("logo"),
     discount: formData.get("discount"),
     vat: formData.get("vat"),
+    tableOrder: formData.get("tableOrder") === "true",
   };
 
   const validatedFields = restaurantFormSchema.safeParse(values);
@@ -253,6 +256,7 @@ export async function editRestaurant(formData: FormData) {
       logo: formData.get("logo"),
       discount: formData.get("discount"),
       vat: formData.get("vat"),
+      tableOrder: formData.get("tableOrder") === "true",
     };
 
     const isLogoFile = values.logo instanceof File;
@@ -694,6 +698,7 @@ export async function placeOrder(orderData: OrderData) {
     platformFee: orderData.platformFee,
     discount: orderData.discount,
     status: "pending",
+    tableNumber: orderData.tableNumber,
   };
 
   const { data: newlyCreatedOrder, error: orderError } = await supabase
@@ -756,6 +761,34 @@ export async function getOrdersByRestaurant(restaurantId: number | unknown) {
   if (error) throw error;
 
   return Orders;
+}
+
+export async function getConfirmedOrdersByRestaurant(
+  restaurantId: number | unknown
+) {
+  const { data: confirmedOrders, error } = await supabase
+    .from("Orders")
+    .select("id")
+    .eq("restaurantId", restaurantId)
+    .eq("status", "confirmed");
+
+  if (error) throw error;
+
+  return confirmedOrders.length;
+}
+
+export async function getCancelledOrdersByRestaurant(
+  restaurantId: number | unknown
+) {
+  const { data: cancelledOrders, error } = await supabase
+    .from("Orders")
+    .select("id")
+    .eq("restaurantId", restaurantId)
+    .eq("status", "cancelled");
+
+  if (error) throw error;
+
+  return cancelledOrders.length;
 }
 
 export async function getOrdersByUser(userId: number | unknown) {
