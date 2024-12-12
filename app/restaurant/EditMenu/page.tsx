@@ -1,4 +1,4 @@
-import EditMenuItemCard from "@/components/EditMenuItemCard";
+import EditMenuList from "@/components/EditMenuList";
 import { getRestaurantMenu, getSession } from "@/lib/actions";
 import { JWTPayload } from "jose";
 import { redirect } from "next/navigation";
@@ -14,15 +14,7 @@ export default async function Page() {
   return (
     <>
       <h1 className="text-2xl font-bold mb-4">Current Menu Items</h1>
-      <div className="space-y-4 max-w-4xl">
-        {menuItems?.map((menuItem) => (
-          <EditMenuItemCard
-            key={menuItem.id}
-            item={menuItem}
-            role={session.role}
-          />
-        ))}
-      </div>
+      <EditMenuList menuItems={menuItems} session={session as JWTPayload} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import AdminEditMenuList from "@/components/AdminEditMenuList";
+import AdminEditMenu from "@/components/AdminEditMenu";
 import RestaurantSelectorWrapper from "@/components/RestaurantSelectorWrapper";
 import Spinner from "@/components/Spinner";
 import { Suspense } from "react";
@@ -18,7 +18,7 @@ export default async function Page({ searchParams }: PageProps) {
 
       <Suspense fallback={<Spinner />} key={restaurantId}>
         {restaurantId ? (
-          <AdminEditMenuList restaurantId={restaurantId} />
+          <AdminEditMenu restaurantId={restaurantId} key={restaurantId} />
         ) : (
           <p className="text-center mt-4 text-sm text-muted-foreground">
             Please select a restaurant to edit the menu items

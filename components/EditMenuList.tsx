@@ -1,12 +1,12 @@
 "use client";
 import { MenuItem } from "@/lib/types";
-import { JWTPayload } from "jose";
-import { Search, X } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import EditMenuItemCard from "./EditMenuItemCard";
+import { JWTPayload } from "jose";
 import { Input } from "./ui/input";
+import { Search, X } from "lucide-react";
 
-export default function AdminEditMenuList({
+export default function EditMenuList({
   menuItems,
   session,
 }: {
