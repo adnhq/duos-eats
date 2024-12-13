@@ -12,9 +12,17 @@ import { JWTPayload } from "jose";
 import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import NavNotification from "./NavNotification";
 import { Button } from "./ui/button";
+import { OrderType } from "@/lib/types";
 
-export default function DesktopNavbar({ session }: { session: JWTPayload }) {
+export default function DesktopNavbar({
+  session,
+  unseenOrders,
+}: {
+  session: JWTPayload;
+  unseenOrders: OrderType[];
+}) {
   const gradientTextClass = `bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-red-500 hover:from-yellow-500 hover:to-amber-600 transition-all duration-300`;
 
   const navLinks = [
@@ -57,6 +65,8 @@ export default function DesktopNavbar({ session }: { session: JWTPayload }) {
           </button>
         )}
       </div>
+
+      <NavNotification session={session} notifications={unseenOrders} />
 
       {session ? (
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>

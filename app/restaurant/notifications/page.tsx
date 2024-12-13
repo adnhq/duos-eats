@@ -1,8 +1,9 @@
+import DashboardNotifications from "@/components/DashboardNotifications";
 import { getOrdersByRestaurant, getSession } from "@/lib/actions";
 import { JWTPayload } from "jose";
-import Navbar from "./Navbar";
+import React from "react";
 
-export default async function NavWrapper() {
+export default async function Page() {
   const session = await getSession();
   let unseenOrders = [];
 
@@ -10,6 +11,10 @@ export default async function NavWrapper() {
     unseenOrders = await getOrdersByRestaurant(session.id);
     unseenOrders = unseenOrders.filter((order) => !order.seen);
   }
-
-  return <Navbar session={session as JWTPayload} unseenOrders={unseenOrders} />;
+  return (
+    <DashboardNotifications
+      session={session as JWTPayload}
+      notifications={unseenOrders}
+    />
+  );
 }

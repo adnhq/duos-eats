@@ -7,8 +7,15 @@ import duosLogo from "../duos-lg.png";
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
 import { usePathname } from "next/navigation";
+import { OrderType } from "@/lib/types";
 
-export default function Navbar({ session }: { session: JWTPayload }) {
+export default function Navbar({
+  session,
+  unseenOrders,
+}: {
+  session: JWTPayload;
+  unseenOrders: OrderType[];
+}) {
   const pathname = usePathname();
 
   if (
@@ -27,10 +34,16 @@ export default function Navbar({ session }: { session: JWTPayload }) {
           </Link>
 
           {/* Desktop Navigation */}
-          <DesktopNavbar session={session as JWTPayload} />
+          <DesktopNavbar
+            session={session as JWTPayload}
+            unseenOrders={unseenOrders}
+          />
 
           {/* Mobile Menu Button */}
-          <MobileNavbar session={session as JWTPayload} />
+          <MobileNavbar
+            session={session as JWTPayload}
+            unseenOrders={unseenOrders}
+          />
         </div>
       </div>
     </nav>

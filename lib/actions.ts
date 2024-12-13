@@ -808,7 +808,7 @@ export async function getOrdersByUser(userId: number | unknown) {
 export async function confirmOrder(orderId: number) {
   const { error } = await supabase
     .from("Orders")
-    .update({ status: "confirmed" })
+    .update({ status: "confirmed", seen: true })
     .eq("id", orderId);
 
   if (error) throw error;
@@ -820,12 +820,23 @@ export async function confirmOrder(orderId: number) {
 export async function cancelOrder(orderId: number) {
   const { error } = await supabase
     .from("Orders")
-    .update({ status: "cancelled" })
+    .update({ status: "cancelled", seen: true })
     .eq("id", orderId);
 
   if (error) throw error;
 
   revalidatePath("/restaurant/OrderStats");
+  return { success: true };
+}
+
+export async function updateOrderSeenStatus(orderId: number) {
+  const { error } = await supabase
+    .from("Orders")
+    .update({ seen: true })
+    .eq("id", orderId);
+
+  if (error) throw error;
+
   return { success: true };
 }
 

@@ -1,9 +1,11 @@
 "use client";
 import { logout } from "@/lib/actions";
+import { OrderType } from "@/lib/types";
 import { JWTPayload } from "jose";
 import { Menu, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import MobileNavNotification from "./MobileNavNotification";
 import { Button } from "./ui/button";
 import {
   Sheet,
@@ -13,7 +15,13 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 
-function MobileNavbar({ session }: { session: JWTPayload }) {
+function MobileNavbar({
+  session,
+  unseenOrders,
+}: {
+  session: JWTPayload;
+  unseenOrders: OrderType[];
+}) {
   const gradientTextClass = `bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-red-500 hover:from-yellow-500 hover:to-amber-600 transition-all duration-300`;
   const router = useRouter();
 
@@ -35,9 +43,14 @@ function MobileNavbar({ session }: { session: JWTPayload }) {
     router.push(link);
   }
 
+  const handleIsOpen = () => {
+    setIsOpen((prev) => !prev);
+    router.refresh();
+  };
+
   return (
     <div className="md:hidden">
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={handleIsOpen}>
         <SheetTrigger asChild>
           <Button
             variant="ghost"
@@ -105,6 +118,12 @@ function MobileNavbar({ session }: { session: JWTPayload }) {
                       >
                         Dashboard
                       </Button>
+
+                      <MobileNavNotification
+                        session={session}
+                        notifications={unseenOrders}
+                        handleRedirect={handleRedirect}
+                      />
 
                       <Button
                         variant={"ghost"}

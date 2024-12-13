@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/actions";
+import { getOrdersByRestaurant, getSession } from "@/lib/actions";
 import { JWTPayload } from "jose";
 import Image from "next/image";
 import duosLogo from "../duos-lg.png";
@@ -13,6 +13,12 @@ import RestaurantSidebarContent from "./RestaurantSidebarContent";
 
 export default async function RestaurantSidebarWrapper() {
   const session = await getSession();
+  let unseenOrders = [];
+
+  if (session && session.role === "restaurant") {
+    unseenOrders = await getOrdersByRestaurant(session.id);
+    unseenOrders = unseenOrders.filter((order) => !order.seen);
+  }
 
   if (!session) return null;
   return (
@@ -24,7 +30,10 @@ export default async function RestaurantSidebarWrapper() {
       </SidebarHeader>
 
       <SidebarContent>
-        <RestaurantSidebarContent />
+        <RestaurantSidebarContent
+          session={session}
+          unseenOrders={unseenOrders}
+        />
       </SidebarContent>
 
       <SidebarFooter>

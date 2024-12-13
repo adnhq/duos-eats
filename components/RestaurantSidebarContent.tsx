@@ -1,5 +1,13 @@
 "use client";
-import { ChefHat, Cog, Home, Info, PencilRuler, Utensils } from "lucide-react";
+import {
+  BellRing,
+  ChefHat,
+  Cog,
+  Home,
+  Info,
+  PencilRuler,
+  Utensils,
+} from "lucide-react";
 
 import {
   SidebarGroup,
@@ -11,6 +19,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
+import { OrderType } from "@/lib/types";
+import { JWTPayload } from "jose";
+import SidebarNotification from "./SidebarNotification";
 
 // Menu items.
 const items = [
@@ -39,7 +50,11 @@ const items = [
     url: "/restaurant/EditMenu",
     icon: PencilRuler,
   },
-
+  {
+    title: "Notifications",
+    url: "/restaurant/notifications",
+    icon: BellRing,
+  },
   {
     title: "Settings",
     url: "/restaurant/Settings",
@@ -47,7 +62,13 @@ const items = [
   },
 ];
 
-export default function RestaurantSidebarContent() {
+export default function RestaurantSidebarContent({
+  session,
+  unseenOrders,
+}: {
+  session: JWTPayload;
+  unseenOrders: OrderType[];
+}) {
   const router = useRouter();
   const { isMobile, toggleSidebar } = useSidebar();
 
@@ -64,15 +85,22 @@ export default function RestaurantSidebarContent() {
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                onClick={() => handleClick(item.url)}
-                className={
-                  "flex items-center w-full space-x-2 pl-4 py-2 rounded-lg mb-1 transition-colors text-sm font-semibold"
-                }
-              >
-                <item.icon />
-                <span>{item.title}</span>
-              </SidebarMenuButton>
+              {item.title === "Notifications" ? (
+                <SidebarNotification
+                  session={session}
+                  notifications={unseenOrders}
+                />
+              ) : (
+                <SidebarMenuButton
+                  onClick={() => handleClick(item.url)}
+                  className={
+                    "flex items-center w-full space-x-2 pl-4 py-2 rounded-lg mb-1 transition-colors text-sm font-semibold"
+                  }
+                >
+                  <item.icon />
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              )}
             </SidebarMenuItem>
           ))}
         </SidebarMenu>

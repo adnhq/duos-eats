@@ -112,6 +112,7 @@ export type OrderType = {
   Users: UserType;
   Restaurants: Restaurant;
   tableNumber: string | null;
+  seen: boolean;
 };
 
 export type OrderItemType = {
