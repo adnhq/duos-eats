@@ -27,7 +27,7 @@ export default function AboutPage() {
           </p>
         </section>
 
-        {/* Features */}
+
         <section className="space-y-12">
           <h2 className={`text-4xl font-semibold text-center tracking-tight`}>
             Why Choose Duos Eats?
