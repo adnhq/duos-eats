@@ -21,7 +21,13 @@ export default async function AdminSidebarWrapper() {
     <Sidebar>
       <SidebarHeader className="mb-10">
         <div className="flex justify-center">
-          <Image src={duosLogo} alt="DUOS Logo" width={128} height={56} />
+          <Image
+            src={duosLogo}
+            alt="DUOS Logo"
+            width={128}
+            height={64}
+            priority
+          />
         </div>
       </SidebarHeader>
 

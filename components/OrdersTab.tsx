@@ -292,45 +292,43 @@ export function OrdersTab({
       </TabsList>
 
       <TabsContent value="orders" className="space-y-6">
-        <Card className="shadow-md">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">Orders</CardTitle>
-          </CardHeader>
+        <h1 className="text-xl font-bold pl-2">Orders</h1>
+
+        <div className="xl:hidden grid grid-cols-1 gap-4">
+          {restaurantOrders?.map((restaurantOrder) => (
+            <OrderCard key={restaurantOrder.id} order={restaurantOrder} />
+          ))}
+        </div>
+
+        {/* Desktop view */}
+        <Card className="hidden xl:block">
           <CardContent>
-            {/* Mobile view */}
-            <div className="xl:hidden grid grid-cols-1 gap-4">
-              {restaurantOrders?.map((restaurantOrder) => (
-                <OrderCard key={restaurantOrder.id} order={restaurantOrder} />
-              ))}
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Order ID</TableHead>
+                  <TableHead>Paid Amount(TK)</TableHead>
+                  <TableHead>Final Earnings(TK)</TableHead>
+                  <TableHead>Discount Applied(%)</TableHead>
+                  <TableHead>Platform Fee(TK)</TableHead>
+                  <TableHead>Actions</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
 
-            {/* Desktop view */}
-            <div className="hidden xl:block">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Order ID</TableHead>
-                    <TableHead>Paid Amount(TK)</TableHead>
-                    <TableHead>Final Earnings(TK)</TableHead>
-                    <TableHead>Discount Applied(%)</TableHead>
-                    <TableHead>Platform Fee(TK)</TableHead>
-                    <TableHead>Actions</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                  {restaurantOrders?.map((restaurantOrder) => (
-                    <OrderTableRow
-                      key={restaurantOrder.id}
-                      order={restaurantOrder}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+              <TableBody>
+                {restaurantOrders?.map((restaurantOrder) => (
+                  <OrderTableRow
+                    key={restaurantOrder.id}
+                    order={restaurantOrder}
+                  />
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
+        {/* </CardContent>
+        </Card> */}
 
         {/* <Card className="shadow-md">
           <CardHeader>

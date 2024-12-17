@@ -1,4 +1,4 @@
-import { ArrowUpDown, DollarSign, Plus, Store } from "lucide-react";
+import { ArrowUpDown, DollarSign, Plus, PlusIcon, Store } from "lucide-react";
 
 import {
   Card,
@@ -9,9 +9,13 @@ import {
 } from "@/components/ui/card";
 import {
   getAllRestaurantEarnings,
+  getRestaurantPayments,
   getUnapprovedRestaurants,
 } from "@/lib/actions";
+import Link from "next/link";
 import RestaurantApproval from "./RestaurantApproval";
+import RestaurantDuesTable from "./RestaurantDuesTable";
+import { Button } from "./ui/button";
 
 // interface Restaurant {
 //   id: number;
@@ -87,6 +91,8 @@ import RestaurantApproval from "./RestaurantApproval";
 
 export default async function AdminDashboard() {
   const unApprovedRestaurants = await getUnapprovedRestaurants();
+  const restaurantPayments = await getRestaurantPayments();
+
   const {
     totalResEarnings,
     totalPlatformFee,
@@ -158,6 +164,30 @@ export default async function AdminDashboard() {
         </CardHeader>
         <CardContent>
           <RestaurantApproval unApprovedRestaurants={unApprovedRestaurants} />
+        </CardContent>
+      </Card>
+
+      <div className="flex justify-end">
+        <Button className="w-full md:w-auto" asChild>
+          <Link href="/admin/PayDues">
+            <PlusIcon className="h-4 w-4 mr-2" />
+            Take Payment
+          </Link>
+        </Button>
+      </div>
+
+      <Card className="shadow-md">
+        <CardHeader className="md:pl-10 sm:pl-4">
+          <CardTitle className="text-lg font-semibold">
+            Restaurant Payment
+          </CardTitle>
+          <CardDescription>
+            Keep track of the restaurant payment
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <RestaurantDuesTable paymentEntries={restaurantPayments} />
         </CardContent>
       </Card>
     </div>

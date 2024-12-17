@@ -6,6 +6,27 @@ export type UserSessionInfo = {
   logo?: string;
 };
 
+export type createdPaymentEntry = {
+  restaurantId: string;
+  amount: string;
+  dateRange: {
+    from: Date;
+    to: Date;
+  };
+};
+
+export type PaymentEntry = {
+  id: number;
+  restaurantId: number;
+  Restaurants: {
+    name: string;
+  };
+  amount: number;
+  created_at: string;
+  startDate: string;
+  endDate: string;
+};
+
 export type Restaurant = {
   id: number;
   created_at: string;

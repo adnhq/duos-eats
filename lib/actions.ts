@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { createSession, decrypt, deleteSession } from "./session";
 import { supabase } from "./supabase";
-import { OrderData } from "./types";
+import { createdPaymentEntry, OrderData } from "./types";
 
 // authentication functions
 
@@ -864,15 +864,26 @@ export async function getRestaurantEarnings(restaurantId: number | unknown) {
 
   if (error) throw error;
 
+  const { data: paymentData, error: paymentError } = await supabase
+    .from("RestaurantsDues")
+    .select("amount")
+    .eq("restaurantId", restaurantId);
+
+  if (paymentError) throw paymentError;
+
   const totalEarnings = Orders.reduce(
     (acc, item) => acc + item.restaurantEarning,
     0
   );
 
-  const totalPlatformFee = Orders.reduce(
+  let totalPlatformFee = Orders.reduce(
     (acc, item) => acc + item.platformFee,
     0
   );
+
+  if (paymentData.length > 0) {
+    totalPlatformFee -= paymentData.reduce((acc, item) => acc + item.amount, 0);
+  }
 
   return { totalEarnings, totalPlatformFee };
 }
@@ -943,15 +954,27 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
 
   if (cancelError) throw cancelError;
 
+  const { data: paymentData, error: paymentError } = await supabase
+    .from("RestaurantsDues")
+    .select("amount")
+    .eq("restaurantId", restaurantId);
+  console.log(paymentData);
+
+  if (paymentError) throw paymentError;
+
   const totalResEarnings = confirmedOrders.reduce(
     (acc, item) => acc + item.restaurantEarning,
     0
   );
 
-  const totalPlatformFee = confirmedOrders.reduce(
+  let totalPlatformFee = confirmedOrders.reduce(
     (acc, item) => acc + item.platformFee,
     0
   );
+
+  if (paymentData.length > 0) {
+    totalPlatformFee -= paymentData.reduce((acc, item) => acc + item.amount, 0);
+  }
 
   return {
     totalResEarnings,
@@ -959,4 +982,34 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
     totalConfirmedOrders: confirmedOrders.length,
     totalCancelledOrders: cancelledOrders.length,
   };
+}
+
+export async function getRestaurantPayments() {
+  const { data: payments, error } = await supabase
+    .from("RestaurantsDues")
+    .select("*, Restaurants(name)")
+    .order("id", {
+      ascending: false,
+    });
+
+  if (error) throw error;
+
+  return payments;
+}
+
+export async function addRestaurantPayment(values: createdPaymentEntry) {
+  const paymentEntry = {
+    restaurantId: values.restaurantId,
+    amount: values.amount,
+    startDate: values.dateRange.from,
+    endDate: values.dateRange.to,
+  };
+
+  const { error } = await supabase
+    .from("RestaurantsDues")
+    .insert([paymentEntry]);
+
+  if (error) throw error;
+
+  return { success: true };
 }

@@ -180,7 +180,7 @@ export default function OrderCard({ order }: { order: OrderType }) {
           </Badge>
         </div>
       </CardContent>
-      <CardFooter className="flex gap-2 pt-4">
+      <CardFooter className="flex flex-col md:flex-row gap-2 pt-4">
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="w-full">
@@ -264,11 +264,9 @@ export default function OrderCard({ order }: { order: OrderType }) {
         {order.status === "pending" && (
           <>
             <Button
-              variant="default"
-              size="sm"
               disabled={allLoading}
               onClick={acceptOrder}
-              className="w-full sm:w-auto"
+              className="w-full md:w-auto"
             >
               {isLoading1 ? (
                 <>
@@ -284,10 +282,9 @@ export default function OrderCard({ order }: { order: OrderType }) {
             </Button>
             <Button
               variant="destructive"
-              size="sm"
               disabled={allLoading}
               onClick={rejectOrder}
-              className="w-full sm:w-auto"
+              className="w-full md:w-auto"
             >
               {isLoading2 ? (
                 <>
