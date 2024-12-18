@@ -911,6 +911,22 @@ export async function getAllRestaurantEarnings() {
 
   if (cancelError) throw cancelError;
 
+  const { data: pendingOrders, error: pendingError } = await supabase
+    .from("Orders")
+    .select("*")
+    .eq("status", "pending")
+    .neq("restaurantId", 10)
+    .neq("restaurantId", 16)
+    .neq("restaurantId", 13)
+    .neq("restaurantId", 11);
+
+  if (pendingError) throw pendingError;
+
+  const totalActualEarnings = confirmedOrders.reduce(
+    (acc, item) => acc + item.actualTotal,
+    0
+  );
+
   const totalResEarnings = confirmedOrders.reduce(
     (acc, item) => acc + item.restaurantEarning,
     0
@@ -922,10 +938,12 @@ export async function getAllRestaurantEarnings() {
   );
 
   return {
+    totalActualEarnings,
     totalResEarnings,
     totalPlatformFee,
     totalConfirmedOrders: confirmedOrders.length,
     totalCancelledOrders: cancelledOrders.length,
+    totalPendingOrders: pendingOrders.length,
   };
 }
 

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import {
   getAllRestaurantEarnings,
+  getAllRestaurants,
   getRestaurantPayments,
   getUnapprovedRestaurants,
 } from "@/lib/actions";
@@ -90,24 +91,36 @@ import { Button } from "./ui/button";
 // ];
 
 export default async function AdminDashboard() {
-  const unApprovedRestaurants = await getUnapprovedRestaurants();
-  const restaurantPayments = await getRestaurantPayments();
+  const [restaurants, unApprovedRestaurants, restaurantPayments] =
+    await Promise.all([
+      getAllRestaurants(),
+      getUnapprovedRestaurants(),
+      getRestaurantPayments(),
+    ]);
 
   const {
+    totalActualEarnings,
     totalResEarnings,
     totalPlatformFee,
     totalConfirmedOrders,
     totalCancelledOrders,
+    totalPendingOrders,
   } = await getAllRestaurantEarnings();
 
   const platformStats = [
     {
-      name: "Total Restaurant Earnings",
+      name: "Actual Earnings",
+      value: totalActualEarnings,
+    },
+    {
+      name: "Restaurant Earnings",
       value: totalResEarnings,
     },
-    { name: "Total Platform Fees", value: totalPlatformFee },
-    { name: "Total Confirmed Orders", value: totalConfirmedOrders },
-    { name: "Total Cancelled Orders", value: totalCancelledOrders },
+    { name: "Platform Fees", value: totalPlatformFee },
+    { name: "Confirmed Orders", value: totalConfirmedOrders },
+    { name: "Cancelled Orders", value: totalCancelledOrders },
+    { name: "Pending Orders", value: totalPendingOrders },
+    { name: "Active Restaurants", value: restaurants.length },
   ];
 
   return (
@@ -145,7 +158,7 @@ export default async function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-xl md:text-2xl font-bold text-white">
-                {index === 0 || index === 1
+                {index === 0 || index === 1 || index === 2
                   ? `Tk ${stat.value.toLocaleString()}`
                   : stat.value}
               </div>
