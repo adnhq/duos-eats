@@ -119,7 +119,7 @@ export default function AboutPage() {
                 steps: [
                   "Enjoy premium dining experiences",
                   "Earn rewards with every visit!",
-                  "Share the experience with friends and family",
+                  "Share the experience with your friends and family",
                 ],
               },
             ].map((step, index) => (
