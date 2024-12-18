@@ -14,5 +14,5 @@ export function priceWithVat(price: number, vat: number) {
 }
 
 export function vatExtraPrice(price: number, vat: number) {
-  return Math.ceil((price * vat) / 100);
+  return Math.ceil((price * vat) / 100); //vat extra price
 }
