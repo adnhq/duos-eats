@@ -890,6 +890,11 @@ export async function getRestaurantEarnings(restaurantId: number | unknown) {
     0
   );
 
+  const totalCustomerPaidAmount = Orders.reduce(
+    (acc, item) => acc + item.discountTotal,
+    0
+  );
+
   const totalDiscountedEarnings = Orders.reduce(
     (acc, item) => acc + item.restaurantEarning,
     0
@@ -904,7 +909,12 @@ export async function getRestaurantEarnings(restaurantId: number | unknown) {
     totalPlatformFee -= paymentData.reduce((acc, item) => acc + item.amount, 0);
   }
 
-  return { totalActualEarnings, totalDiscountedEarnings, totalPlatformFee };
+  return {
+    totalCustomerPaidAmount,
+    totalActualEarnings,
+    totalDiscountedEarnings,
+    totalPlatformFee,
+  };
 }
 
 export async function getAllUsers() {
@@ -952,6 +962,11 @@ export async function getAllRestaurantEarnings() {
 
   if (pendingError) throw pendingError;
 
+  const totalCustomerPaidAmount = confirmedOrders.reduce(
+    (acc, item) => acc + item.discountTotal,
+    0
+  );
+
   const totalActualEarnings = confirmedOrders.reduce(
     (acc, item) => acc + item.actualTotal,
     0
@@ -968,6 +983,7 @@ export async function getAllRestaurantEarnings() {
   );
 
   return {
+    totalCustomerPaidAmount,
     totalActualEarnings,
     totalResEarnings,
     totalPlatformFee,
@@ -1027,6 +1043,11 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
     0
   );
 
+  const totalCustomerPaidAmount = confirmedOrders.reduce(
+    (acc, item) => acc + item.discountTotal,
+    0
+  );
+
   const totalResEarnings = confirmedOrders.reduce(
     (acc, item) => acc + item.restaurantEarning,
     0
@@ -1045,6 +1066,7 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
     totalActualEarnings,
     totalResEarnings,
     totalPlatformFee,
+    totalCustomerPaidAmount,
     totalConfirmedOrders: confirmedOrders.length,
     totalCancelledOrders: cancelledOrders.length,
     totalPendingOrders: pendingOrders.length,

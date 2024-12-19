@@ -15,6 +15,7 @@ export default async function RestaurantOrderStats({
     totalCancelledOrders,
     totalConfirmedOrders,
     totalPlatformFee,
+    totalCustomerPaidAmount,
   } = await getEarningsByRestaurant(restaurantId);
 
   return (
@@ -35,10 +36,22 @@ export default async function RestaurantOrderStats({
           </CardContent>
         </Card>
 
+        <Card className="shadow-lg bg-gradient-to-br from-sky-500 to-sky-600">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Customer Paid Amount
+            </CardTitle>
+            <FaBangladeshiTakaSign className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent className="text-2xl font-bold text-white">
+            Tk {totalCustomerPaidAmount.toLocaleString()}
+          </CardContent>
+        </Card>
+
         <Card className="shadow-lg bg-gradient-to-br from-blue-500 to-blue-600">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-white">
-              Earnings after Discount
+              Restaurant Net Earnings
             </CardTitle>
             <FaBangladeshiTakaSign className="h-4 w-4 text-white" />
           </CardHeader>

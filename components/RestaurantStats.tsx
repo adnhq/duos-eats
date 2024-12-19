@@ -1,11 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  getCancelledOrdersByRestaurant,
-  getConfirmedOrdersByRestaurant,
+  getEarningsByRestaurant,
   getOrdersByRestaurant,
   getPaymentsByRestaurant,
-  getPendingOrdersByRestaurant,
-  getRestaurantEarnings,
 } from "@/lib/actions";
 import { Utensils } from "lucide-react";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
@@ -115,13 +112,23 @@ export default async function RestaurantStats({
   discount: string;
   id: string | unknown;
 }) {
-  const { totalActualEarnings, totalDiscountedEarnings, totalPlatformFee } =
-    (await getRestaurantEarnings(id)) || {};
-  const restaurantOrders = await getOrdersByRestaurant(id);
-  const confirmedOrders = await getConfirmedOrdersByRestaurant(id);
-  const cancelledOrders = await getCancelledOrdersByRestaurant(id);
-  const pendingOrders = await getPendingOrdersByRestaurant(id);
-  const paymentEntries = await getPaymentsByRestaurant(id);
+  const [
+    {
+      totalActualEarnings,
+      totalPendingOrders,
+      totalResEarnings,
+      totalCancelledOrders,
+      totalConfirmedOrders,
+      totalPlatformFee,
+      totalCustomerPaidAmount,
+    },
+    restaurantOrders,
+    paymentEntries,
+  ] = await Promise.all([
+    getEarningsByRestaurant(id),
+    getOrdersByRestaurant(id),
+    getPaymentsByRestaurant(id),
+  ]);
 
   return (
     <>
@@ -139,15 +146,27 @@ export default async function RestaurantStats({
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg bg-gradient-to-br from-blue-500 to-blue-600">
+        <Card className="shadow-lg bg-gradient-to-br from-sky-500 to-sky-600">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-white">
-              Earnings after Discount
+              Customer Paid Amount
             </CardTitle>
             <FaBangladeshiTakaSign className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
-            Tk {totalDiscountedEarnings.toLocaleString()}
+            Tk {totalCustomerPaidAmount.toLocaleString()}
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg bg-gradient-to-br from-blue-500 to-blue-600">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Restaurant Net Earnings
+            </CardTitle>
+            <FaBangladeshiTakaSign className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent className="text-2xl font-bold text-white">
+            Tk {totalResEarnings.toLocaleString()}
           </CardContent>
         </Card>
 
@@ -171,7 +190,7 @@ export default async function RestaurantStats({
             <Utensils className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
-            {confirmedOrders}
+            {totalConfirmedOrders}
           </CardContent>
         </Card>
 
@@ -183,7 +202,7 @@ export default async function RestaurantStats({
             <Utensils className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
-            {cancelledOrders}
+            {totalCancelledOrders}
           </CardContent>
         </Card>
 
@@ -195,7 +214,7 @@ export default async function RestaurantStats({
             <Utensils className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
-            {pendingOrders}
+            {totalPendingOrders}
           </CardContent>
         </Card>
       </div>
