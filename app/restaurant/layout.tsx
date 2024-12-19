@@ -21,7 +21,7 @@ export default function RestaurantDashboardLayout({
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
-            <BreadcrumbItem className="hidden md:block">
+            <BreadcrumbItem className="font-semibold text-base">
               Dashboard
             </BreadcrumbItem>
           </Breadcrumb>

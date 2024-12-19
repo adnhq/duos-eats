@@ -4,9 +4,11 @@ import {
   getConfirmedOrdersByRestaurant,
   getOrdersByRestaurant,
   getPaymentsByRestaurant,
+  getPendingOrdersByRestaurant,
   getRestaurantEarnings,
 } from "@/lib/actions";
-import { DollarSign, Receipt, Utensils } from "lucide-react";
+import { Utensils } from "lucide-react";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { OrdersTab } from "./OrdersTab";
 
 const todayStats = {
@@ -113,26 +115,39 @@ export default async function RestaurantStats({
   discount: string;
   id: string | unknown;
 }) {
-  const { totalEarnings, totalPlatformFee } =
+  const { totalActualEarnings, totalDiscountedEarnings, totalPlatformFee } =
     (await getRestaurantEarnings(id)) || {};
   const restaurantOrders = await getOrdersByRestaurant(id);
   const confirmedOrders = await getConfirmedOrdersByRestaurant(id);
   const cancelledOrders = await getCancelledOrdersByRestaurant(id);
+  const pendingOrders = await getPendingOrdersByRestaurant(id);
   const paymentEntries = await getPaymentsByRestaurant(id);
 
   return (
     <>
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 pt-6 pb-4">
+        <Card className="shadow-lg bg-gradient-to-br from-green-500 to-green-600">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Actual Earnings
+            </CardTitle>
+            <FaBangladeshiTakaSign className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent className="text-2xl font-bold text-white">
+            Tk {totalActualEarnings.toLocaleString()}
+          </CardContent>
+        </Card>
+
         <Card className="shadow-lg bg-gradient-to-br from-blue-500 to-blue-600">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-white">
-              Total Earnings
+              Earnings after Discount
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-white" />
+            <FaBangladeshiTakaSign className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
-            Tk {totalEarnings.toLocaleString()}
+            Tk {totalDiscountedEarnings.toLocaleString()}
           </CardContent>
         </Card>
 
@@ -141,7 +156,7 @@ export default async function RestaurantStats({
             <CardTitle className="text-sm font-medium text-white">
               Pending Dues
             </CardTitle>
-            <Utensils className="h-4 w-4 text-white" />
+            <FaBangladeshiTakaSign className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
             Tk {totalPlatformFee.toLocaleString()}
@@ -153,7 +168,7 @@ export default async function RestaurantStats({
             <CardTitle className="text-sm font-medium text-white">
               Confirmed Orders
             </CardTitle>
-            <Receipt className="h-4 w-4 text-white" />
+            <Utensils className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
             {confirmedOrders}
@@ -165,10 +180,22 @@ export default async function RestaurantStats({
             <CardTitle className="text-sm font-medium text-white">
               Cancelled Orders
             </CardTitle>
-            <Receipt className="h-4 w-4 text-white" />
+            <Utensils className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent className="text-2xl font-bold text-white">
             {cancelledOrders}
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg bg-gradient-to-br from-yellow-500 to-yellow-600">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Pending Orders
+            </CardTitle>
+            <Utensils className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent className="text-2xl font-bold text-white">
+            {pendingOrders}
           </CardContent>
         </Card>
       </div>

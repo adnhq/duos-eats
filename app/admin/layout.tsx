@@ -25,7 +25,7 @@ export default function AdminLayout({
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
-            <BreadcrumbItem className="hidden md:block">
+            <BreadcrumbItem className="hidden md:block font-semibold text-base">
               <BreadcrumbLink href="/admin/Dashboard">Dashboard</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>

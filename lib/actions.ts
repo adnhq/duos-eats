@@ -791,6 +791,20 @@ export async function getCancelledOrdersByRestaurant(
   return cancelledOrders.length;
 }
 
+export async function getPendingOrdersByRestaurant(
+  restaurantId: number | unknown
+) {
+  const { data: pendingOrders, error } = await supabase
+    .from("Orders")
+    .select("id")
+    .eq("restaurantId", restaurantId)
+    .eq("status", "pending");
+
+  if (error) throw error;
+
+  return pendingOrders.length;
+}
+
 export async function getOrdersByUser(userId: number | unknown) {
   const { data: Orders, error } = await supabase
     .from("Orders")
@@ -871,7 +885,12 @@ export async function getRestaurantEarnings(restaurantId: number | unknown) {
 
   if (paymentError) throw paymentError;
 
-  const totalEarnings = Orders.reduce(
+  const totalActualEarnings = Orders.reduce(
+    (acc, item) => acc + item.actualTotal,
+    0
+  );
+
+  const totalDiscountedEarnings = Orders.reduce(
     (acc, item) => acc + item.restaurantEarning,
     0
   );
@@ -885,7 +904,7 @@ export async function getRestaurantEarnings(restaurantId: number | unknown) {
     totalPlatformFee -= paymentData.reduce((acc, item) => acc + item.amount, 0);
   }
 
-  return { totalEarnings, totalPlatformFee };
+  return { totalActualEarnings, totalDiscountedEarnings, totalPlatformFee };
 }
 
 export async function getAllUsers() {
@@ -983,6 +1002,18 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
 
   if (cancelError) throw cancelError;
 
+  const { data: pendingOrders, error: pendingError } = await supabase
+    .from("Orders")
+    .select("actualTotal, discountTotal, platformFee, restaurantEarning")
+    // .neq("restaurantId", 10)
+    // .neq("restaurantId", 16)
+    // .neq("restaurantId", 13)
+    // .neq("restaurantId", 11)
+    .eq("status", "pending")
+    .eq("restaurantId", restaurantId);
+
+  if (pendingError) throw pendingError;
+
   const { data: paymentData, error: paymentError } = await supabase
     .from("RestaurantsDues")
     .select("amount")
@@ -990,6 +1021,11 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
   console.log(paymentData);
 
   if (paymentError) throw paymentError;
+
+  const totalActualEarnings = confirmedOrders.reduce(
+    (acc, item) => acc + item.actualTotal,
+    0
+  );
 
   const totalResEarnings = confirmedOrders.reduce(
     (acc, item) => acc + item.restaurantEarning,
@@ -1006,10 +1042,12 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
   }
 
   return {
+    totalActualEarnings,
     totalResEarnings,
     totalPlatformFee,
     totalConfirmedOrders: confirmedOrders.length,
     totalCancelledOrders: cancelledOrders.length,
+    totalPendingOrders: pendingOrders.length,
   };
 }
 
