@@ -90,7 +90,7 @@ export default function DashboardNotifications({
 
   return (
     <div className="max-w-4xl space-y-8">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
         <div>
           <h2 className="font-bold text-2xl">Notifications</h2>
           <p className="text-sm text-muted-foreground">

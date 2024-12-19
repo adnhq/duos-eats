@@ -10,6 +10,7 @@ import {
 import {
   getAllRestaurantEarnings,
   getAllRestaurants,
+  getAllUsers,
   getRestaurantPayments,
   getUnapprovedRestaurants,
 } from "@/lib/actions";
@@ -91,11 +92,12 @@ import { Button } from "./ui/button";
 // ];
 
 export default async function AdminDashboard() {
-  const [restaurants, unApprovedRestaurants, restaurantPayments] =
+  const [restaurants, unApprovedRestaurants, restaurantPayments, users] =
     await Promise.all([
       getAllRestaurants(),
       getUnapprovedRestaurants(),
       getRestaurantPayments(),
+      getAllUsers(),
     ]);
 
   const {
@@ -121,6 +123,7 @@ export default async function AdminDashboard() {
     { name: "Cancelled Orders", value: totalCancelledOrders },
     { name: "Pending Orders", value: totalPendingOrders },
     { name: "Active Restaurants", value: restaurants.length },
+    { name: "Customers", value: users.length },
   ];
 
   return (
@@ -139,7 +142,7 @@ export default async function AdminDashboard() {
                 ? "bg-gradient-to-br from-green-500 to-green-600"
                 : index === 2
                 ? "bg-gradient-to-br from-purple-500 to-purple-600"
-                : "bg-gradient-to-br from-orange-500 to-orange-600"
+                : "bg-gradient-to-br from-teal-500 to-teal-600"
             }`}
           >
             <CardHeader className="flex flex-row items-center justify-between pb-2">

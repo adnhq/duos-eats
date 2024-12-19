@@ -888,6 +888,17 @@ export async function getRestaurantEarnings(restaurantId: number | unknown) {
   return { totalEarnings, totalPlatformFee };
 }
 
+export async function getAllUsers() {
+  const { data: Users, error } = await supabase
+    .from("Users")
+    .select("name")
+    .neq("email", process.env.ADMIN_EMAIL);
+
+  if (error) throw error;
+
+  return Users;
+}
+
 export async function getAllRestaurantEarnings() {
   const { data: confirmedOrders, error: confirmError } = await supabase
     .from("Orders")
@@ -951,10 +962,10 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
   const { data: confirmedOrders, error: confirmError } = await supabase
     .from("Orders")
     .select("actualTotal, discountTotal, platformFee, restaurantEarning")
-    .neq("restaurantId", 10)
-    .neq("restaurantId", 16)
-    .neq("restaurantId", 13)
-    .neq("restaurantId", 11)
+    // .neq("restaurantId", 10)
+    // .neq("restaurantId", 16)
+    // .neq("restaurantId", 13)
+    // .neq("restaurantId", 11)
     .eq("status", "confirmed")
     .eq("restaurantId", restaurantId);
 
@@ -963,10 +974,10 @@ export async function getEarningsByRestaurant(restaurantId: number | unknown) {
   const { data: cancelledOrders, error: cancelError } = await supabase
     .from("Orders")
     .select("actualTotal, discountTotal, platformFee, restaurantEarning")
-    .neq("restaurantId", 10)
-    .neq("restaurantId", 16)
-    .neq("restaurantId", 13)
-    .neq("restaurantId", 11)
+    // .neq("restaurantId", 10)
+    // .neq("restaurantId", 16)
+    // .neq("restaurantId", 13)
+    // .neq("restaurantId", 11)
     .eq("status", "cancelled")
     .eq("restaurantId", restaurantId);
 
@@ -1006,6 +1017,20 @@ export async function getRestaurantPayments() {
   const { data: payments, error } = await supabase
     .from("RestaurantsDues")
     .select("*, Restaurants(name)")
+    .order("id", {
+      ascending: false,
+    });
+
+  if (error) throw error;
+
+  return payments;
+}
+
+export async function getPaymentsByRestaurant(restaurantId: number | unknown) {
+  const { data: payments, error } = await supabase
+    .from("RestaurantsDues")
+    .select("*, Restaurants(name)")
+    .eq("restaurantId", restaurantId)
     .order("id", {
       ascending: false,
     });

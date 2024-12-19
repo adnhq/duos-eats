@@ -1,7 +1,13 @@
 "use client";
 // components/OrdersTab.tsx
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -13,7 +19,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { editRestaurantDiscount } from "@/lib/actions";
-import { OrderType } from "@/lib/types";
+import { OrderType, PaymentEntry } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Pencil } from "lucide-react";
 // import { useState } from "react";
@@ -29,6 +35,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import RestaurantDuesTable from "./RestaurantDuesTable";
 
 // interface OrderItem {
 //   name: string;
@@ -75,6 +82,7 @@ type OrdersTabProps = {
   weeklyMonthlyStats: WeeklyMonthlyStats;
   discount: string;
   restaurantId: string | unknown;
+  paymentEntries: PaymentEntry[];
 };
 
 const formSchema = z.object({
@@ -92,6 +100,7 @@ export function OrdersTab({
   // historicalData,
   restaurantOrders,
   todayStats,
+  paymentEntries,
   // weeklyMonthlyStats,
   discount,
   restaurantId,
@@ -498,6 +507,21 @@ export function OrdersTab({
               </form>
             </Form>
             {/* </div> */}
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-md">
+          <CardHeader className="md:pl-10 sm:pl-4">
+            <CardTitle className="text-lg font-semibold">
+              Payment History
+            </CardTitle>
+            <CardDescription>
+              Keep track of the restaurant payment history
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <RestaurantDuesTable paymentEntries={paymentEntries} />
           </CardContent>
         </Card>
 

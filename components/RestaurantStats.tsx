@@ -3,6 +3,7 @@ import {
   getCancelledOrdersByRestaurant,
   getConfirmedOrdersByRestaurant,
   getOrdersByRestaurant,
+  getPaymentsByRestaurant,
   getRestaurantEarnings,
 } from "@/lib/actions";
 import { DollarSign, Receipt, Utensils } from "lucide-react";
@@ -117,6 +118,7 @@ export default async function RestaurantStats({
   const restaurantOrders = await getOrdersByRestaurant(id);
   const confirmedOrders = await getConfirmedOrdersByRestaurant(id);
   const cancelledOrders = await getCancelledOrdersByRestaurant(id);
+  const paymentEntries = await getPaymentsByRestaurant(id);
 
   return (
     <>
@@ -179,6 +181,7 @@ export default async function RestaurantStats({
         discount={discount}
         todayStats={todayStats}
         weeklyMonthlyStats={weeklyMonthlyStats}
+        paymentEntries={paymentEntries}
       />
     </>
   );
