@@ -1,6 +1,6 @@
 # Duos Eats 🍴
 
-Welcome to **Duos Eats**, your ultimate destination for delicious meals at discounted prices! Whether you’re ordering food for delivery or reserving a table at your favorite restaurant, Duos Eats makes it simple and rewarding.
+Welcome to **Duos Eats**, your ultimate destination for delicious meals at discounted prices! Whether you’re ordering food or reserving a table at your favorite restaurant, Duos Eats makes it simple and rewarding.
 
 ### 🚀 Go to _[DUOS EATS](https://duoseats.com)_
 
