@@ -23,7 +23,7 @@ export default function AboutPage() {
           <p className="text-xl text-gray-600 leading-relaxed">
             Transform your dining experience with exclusive savings at the best
             restaurants across the country. Duos Eats brings you a seamless way
-            to enjoy premium dining while keeping more money in your pocket.
+            to enjoy premium dining while keeping more money in your pocket!
           </p>
         </section>
 
