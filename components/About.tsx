@@ -38,7 +38,7 @@ export default function AboutPage() {
                 title: "Exclusive Discounts",
                 icon: Zap,
                 description:
-                  "Save more than 10% on every dine-in experience at our carefully selected partner restaurants.",
+                  "Save more than 10% on every dine-in experience at our carefully selected restaurants.",
               },
               {
                 title: "Premium Experience",
