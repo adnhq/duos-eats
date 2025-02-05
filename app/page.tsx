@@ -3,7 +3,7 @@ import Restaurants from "@/components/Restaurants";
 import Spinner from "@/components/Spinner";
 import { Suspense } from "react";
 
-export default async function Page() {
+export default function Page() {
   return (
     <>
       <HeroSection />

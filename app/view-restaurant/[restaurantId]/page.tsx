@@ -1,7 +1,15 @@
 import RestaurantView from "@/components/RestaurantView";
 import Spinner from "@/components/Spinner";
-import { getRestaurant } from "@/lib/actions";
+import { getAllRestaurants } from "@/lib/actions";
 import { Suspense } from "react";
+
+export async function generateStaticParams() {
+  const restaurants = await getAllRestaurants();
+
+  return restaurants.map((restaurant) => ({
+    restaurantId: String(restaurant.id),
+  }));
+}
 
 export default async function Page({
   params,
@@ -9,9 +17,6 @@ export default async function Page({
   params: Promise<{ restaurantId: string }>;
 }) {
   const { restaurantId } = await params;
-  const restaurant = await getRestaurant(restaurantId);
-
-  if (restaurant.length === 0) return <h1>No Restaurant found</h1>;
 
   return (
     <main className="max-w-7xl min-h-screen mx-auto pt-24">
