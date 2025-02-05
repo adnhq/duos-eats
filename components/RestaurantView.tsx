@@ -2,7 +2,7 @@ import { getRestaurant, getRestaurantMenu } from "@/lib/actions";
 import RestaurantMenu from "./RestaurantMenu";
 
 // Option 1: Use ISR
-export const revalidate = 300; // revalidating every 5 minutes
+// export const revalidate = 300; // revalidating every 5 minutes
 
 export default async function RestaurantView({
   restaurantId,

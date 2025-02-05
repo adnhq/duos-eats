@@ -1,15 +1,14 @@
 import RestaurantView from "@/components/RestaurantView";
 import Spinner from "@/components/Spinner";
-import { getAllRestaurants } from "@/lib/actions";
 import { Suspense } from "react";
 
-export async function generateStaticParams() {
-  const restaurants = await getAllRestaurants();
+// export async function generateStaticParams() {
+//   const restaurants = await getAllRestaurants();
 
-  return restaurants.map((restaurant) => ({
-    restaurantId: String(restaurant.id),
-  }));
-}
+//   return restaurants.map((restaurant) => ({
+//     restaurantId: String(restaurant.id),
+//   }));
+// }
 
 export default async function Page({
   params,
