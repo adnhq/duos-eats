@@ -363,7 +363,7 @@ export async function getAllRestaurants() {
 
 export async function getRestaurant(restaurantId: string | unknown) {
   "use cache";
-  cacheLife("3min");
+  cacheLife("minutes");
 
   const { data: Restaurant, error } = await supabase
     .from("Restaurants")
@@ -394,7 +394,7 @@ export async function getRestaurantMenuCategories(id: string | unknown) {
 
 export async function getRestaurantMenu(id: string | unknown) {
   "use cache";
-  cacheLife("3min");
+  cacheLife("minutes");
   const { data: menu, error } = await supabase
     .from("Menu")
     .select("*, MenuParameters(name, options)")
