@@ -42,6 +42,7 @@ export default function DesktopNavbar({
 
   function handleRedirect(link: string) {
     setIsOpen(false);
+    router.prefetch(link);
     router.push(link);
   }
   return (

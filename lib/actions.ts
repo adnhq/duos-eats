@@ -2,7 +2,7 @@
 
 import bcrypt from "bcrypt";
 import { JWTPayload } from "jose";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_cacheLife as cacheLife } from "next/cache";
 import { cookies } from "next/headers";
 import { z } from "zod";
 import { createSession, decrypt, deleteSession } from "./session";
@@ -344,6 +344,8 @@ export async function editRestaurantPassword(formData: FormData) {
 }
 
 export async function getAllRestaurants() {
+  "use cache";
+  cacheLife("minutes");
   const { data: Restaurants, error } = await supabase
     .from("Restaurants")
     .select("*")
@@ -360,6 +362,9 @@ export async function getAllRestaurants() {
 }
 
 export async function getRestaurant(restaurantId: string | unknown) {
+  "use cache";
+  cacheLife("3min");
+
   const { data: Restaurant, error } = await supabase
     .from("Restaurants")
     .select("*")
@@ -388,6 +393,8 @@ export async function getRestaurantMenuCategories(id: string | unknown) {
 }
 
 export async function getRestaurantMenu(id: string | unknown) {
+  "use cache";
+  cacheLife("3min");
   const { data: menu, error } = await supabase
     .from("Menu")
     .select("*, MenuParameters(name, options)")

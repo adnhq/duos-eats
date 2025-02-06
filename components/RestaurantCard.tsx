@@ -27,7 +27,7 @@ export default function RestaurantCard({
   restaurant: Restaurant;
 }) {
   return (
-    <Link href={`/view-restaurant/${restaurant.id}`}>
+    <Link href={`/view-restaurant/${restaurant.id}`} prefetch={true}>
       <Card className="overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl group cursor-pointer">
         <CardContent className="p-0">
           <div className="relative aspect-[4/3] overflow-hidden">
