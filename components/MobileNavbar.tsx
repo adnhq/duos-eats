@@ -4,7 +4,7 @@ import { OrderType } from "@/lib/types";
 import { JWTPayload } from "jose";
 import { Menu, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MobileNavNotification from "./MobileNavNotification";
 import { Button } from "./ui/button";
 import {
@@ -47,6 +47,16 @@ function MobileNavbar({
     setIsOpen((prev) => !prev);
     router.refresh();
   };
+
+  useEffect(() => {
+    navLinks.forEach((link) => {
+      router.prefetch(link.href);
+    });
+
+    router.prefetch("/registration");
+    router.prefetch("/login");
+    router.prefetch("/signup");
+  }, []);
 
   return (
     <div className="md:hidden">

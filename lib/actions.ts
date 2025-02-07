@@ -345,7 +345,7 @@ export async function editRestaurantPassword(formData: FormData) {
 
 export async function getAllRestaurants() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("minutes");
   const { data: Restaurants, error } = await supabase
     .from("Restaurants")
     .select("*")

@@ -11,7 +11,7 @@ import { logout } from "@/lib/actions";
 import { JWTPayload } from "jose";
 import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavNotification from "./NavNotification";
 import { Button } from "./ui/button";
 import { OrderType } from "@/lib/types";
@@ -42,9 +42,19 @@ export default function DesktopNavbar({
 
   function handleRedirect(link: string) {
     setIsOpen(false);
-    router.prefetch(link);
     router.push(link);
   }
+
+  useEffect(() => {
+    navLinks.forEach((link) => {
+      router.prefetch(link.href);
+    });
+
+    router.prefetch("/registration");
+    router.prefetch("/login");
+    router.prefetch("/signup");
+  }, []);
+
   return (
     <div className="hidden md:flex items-center space-x-6">
       <div className="flex space-x-6">
