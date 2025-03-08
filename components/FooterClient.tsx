@@ -116,9 +116,17 @@ export default function FooterClient({ session }: { session: JWTPayload }) {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-gray-200 text-center">
-          <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} Duos Eats. All rights reserved.
-          </p>
+          <div className="text-sm text-gray-500">
+            &copy; {new Date().getFullYear()} Duos Eats. All rights reserved. |
+            Created by{" "}
+            <a
+              className="font-semibold text-sky-700 hover:text-sky-600 hover:border-b hover:border-sky-600 transition-all"
+              href="https://www.facebook.com/saha547.neloy"
+              target="_blank"
+            >
+              Neloy Saha
+            </a>
+          </div>
         </div>
       </div>
     </footer>
