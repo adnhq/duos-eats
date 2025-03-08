@@ -121,10 +121,18 @@ export default function FooterClient({ session }: { session: JWTPayload }) {
             Created by{" "}
             <a
               className="font-semibold text-sky-700 hover:text-sky-600 hover:border-b hover:border-sky-600 transition-all"
-              href="https://www.facebook.com/saha547.neloy"
+              href="https://www.linkedin.com/in/neloysaha1"
               target="_blank"
             >
               Neloy Saha
+            </a>{" "}
+            and{" "}
+            <a
+              className="font-semibold text-sky-700 hover:text-sky-600 hover:border-b hover:border-sky-600 transition-all"
+              href="https://www.linkedin.com/in/adnanhaque1"
+              target="_blank"
+            >
+              Adnan Haque
             </a>
           </div>
         </div>
