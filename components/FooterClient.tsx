@@ -132,3 +132,4 @@ export default function FooterClient({ session }: { session: JWTPayload }) {
     </footer>
   );
 }
+//
